@@ -74,7 +74,7 @@ CCD2=IINT(CULHB);   !driven current
 !========Current Density===========
 !IPL=0.35*FRAMP(0.12,0.155)+0.15;
 !IPL=ZRD2;
-IPL=0.184;
+IPL=0.2;
 CU:Eq;
 CU=0.3;
 CC="work(j,303)"; !+CCMHD;
