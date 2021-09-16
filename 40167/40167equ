@@ -41,7 +41,7 @@ CAR31X = 1.5e-6           ! to substitute this for "volume" neutral density
 
 !============Stationary FRTC 2014============
 !QLH=ZRD1;
-QLH=0.12d0;
+QLH=0.2d0;
 !QLH=0.12d0*(FRAMP(0.180,0.182)-FJUMP(0.3d0));
 CF1=0.18d0;
 CF2=0.195d0;
