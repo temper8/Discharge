@@ -18,12 +18,11 @@ def read_spectrum(f):
         #print(line)
         table.append(line.split())
 
-    print(len(table))
-  
-
     for row in table:
         for index, (p, item) in enumerate(spectrum.items()):
             #print(p, item, index)
             item.append(float(row[index]))
+
+    print(len(table))
 
     return spectrum  
