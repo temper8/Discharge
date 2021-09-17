@@ -5,7 +5,7 @@ RTOR            0.375
 AB              0.25
 ABC             0.23
 !AWALL           0.3
-ELONM           2                 !elong. of the chamber
+ELONM           2.                 !elong. of the chamber
 TRICH           0.4                 !trian. of the chamber
 ELONG           1.8                 !elong. of the LCMS
 TRIAN           0.4                 !trian. of the LCMS
