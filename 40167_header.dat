@@ -1,5 +1,5 @@
 !!!!!!!!!!!!!  physical parameters !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  2.45    ! Freq,     RF frequency, GHz
+  0.2    ! Freq,     RF frequency, GHz
   2.0     ! xmi1,     Mi1/Mp,  relative mass of ions 1
   1.0     ! zi1,      charge of ions 1
   16.0     ! xmi2,     Mi2/Mp,  relative mass of ions 2
