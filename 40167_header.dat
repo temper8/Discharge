@@ -46,7 +46,7 @@
   1      ! itor,      +-1, Btor direction in right coord{drho,dteta,dfi}
   1      ! ipol,      +-1, Bpol direction in right coord{drho,dteta,dfi}
 !!!!!!!!!!!!!  grill parameters and input LH spectrum !!!!!!!!!!!!
-  20.0   ! Zplus,    upper grill corner in centimeters
- -20.0   ! Zminus,   lower grill corner in centimeters
+  11.0   ! Zplus,    upper grill corner in centimeters
+ -11.0   ! Zminus,   lower grill corner in centimeters
   21     ! ntet,     theta grid number
   51     ! nnz,      N_phi grid number
