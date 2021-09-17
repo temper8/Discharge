@@ -251,7 +251,7 @@
 198.0   0
 199.0   0
 200.0   0
-!!negative Nfi; P_LH(a.units); points number<1001, arbitrary spacing.
+!1.0 first value=part(%) of total power in positive spectrum.!!negative Nfi; P_LH(a.units); points number<1001, arbitrary spacing.
 -200.0   0
 -199.0   0
 -198.0   0
