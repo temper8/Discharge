@@ -7,7 +7,7 @@ ABC             0.23
 !AWALL           0.3
 ELONM           2                 !elong. of the chamber
 TRICH           0.4                 !trian. of the chamber
-ELONG           1.92                 !elong. of the LCMS
+ELONG           1.8                 !elong. of the LCMS
 TRIAN           0.53                 !trian. of the LCMS
 AMJ             2.                  !mass of main ions
 ZMJ             1.                  !charge of main ions
