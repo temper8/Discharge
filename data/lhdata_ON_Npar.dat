@@ -1,0 +1,91 @@
+!!!!!!!!!!!!!  physical parameters !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  2.45    ! Freq,     RF frequency, GHz
+  2.0     ! xmi1,     Mi1/Mp,  relative mass of ions 1
+  1.0     ! zi1,      charge of ions 1
+  1.0     ! xmi2,     Mi2/Mp,  relative mass of ions 2
+  1.0     ! zi2,      charge of ions 2
+  0.25    ! dni2,     Ni2/Ni1, relative density of ions 2
+  1.0     ! xmi3,     Mi3/Mp,  relative mass of ions 3
+  1.0     ! zi3,      charge of ions 3
+  0.0     ! dni3,     Ni3/Ni1, relative density of ions 3
+!!!!!!!!!!!!!  parameters for alphas calculations !!!!!!!!!!!!!!!!!
+  0       ! itend0,   if = 0, no alphas
+  30.0    ! energy,   max. perp. energy of alphas (MeV)
+  1.0     ! factor,   factor in alpha source
+  0.3     ! dra,      relative alpha source broadening (dr/a)
+  30      ! kv,       V_perp  greed number
+!!!!!!!!!!!!! numerical parameters !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ 40       ! nr,       radial grid number  <= 105
+ 1.e-6    ! hmin1,    min. step in the Fast comp. mode, <<1.  
+ 1.e-3    ! rrange,   size of a 'turning' point region, <1.
+ 1.e-6    ! eps,      ray-tracing accuracy
+ 1.5      ! hdrob,    h4 correction,
+ 0.7      ! cleft,    left Vz plato border shift (<1)
+ 1.5      ! cright,   right Vz plato border shift (>1)
+ 0.25     ! cdel,     (left part)/(Vz plato size)
+ 0.999    ! rbord,    relative radius of reflection, <=1.
+ 0.2      ! pchm,     threshold between 'strong' and weak' absorption, <<1.
+ 1.e-2    ! pabs,     part of remaining power interp. as absorption
+ 1.e-5    ! pgiter,   relative accuracy to stop iterations
+ 20       ! ni1,      grid number in the left part of Vz plato
+ 10       ! ni2,      grid number in the right part of Vz plato
+ 199       ! niterat,  maximal number of iterations
+ 50       ! nmaxm(1), permitted reflections at 0 iteration
+ 50       ! nmaxm(2), permitted reflections at 1 iteration
+ 50       ! nmaxm(3), permitted reflections at 2 iteration
+ 50       ! nmaxm(4), permitted reflections at 3 iteration
+ 5000     ! maxstep2, maximal steps' number in Fast comp. mode
+ 5000     ! maxstep4, maximal steps' number in Slow comp. mode
+!!!!!!!!!!!!!  options !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  2      ! ipri,      printing output monitoring: 0,1,2,3,4
+  1      ! iw,        initial mode (slow=1, fast=-1)
+  0      ! ismth,     if=0, no smoothing in Ne(rho),Te(rho),Ti(rho)
+  0      ! ismthalf,  if=0, no smoothing in D_alpha(vperp)
+  1      ! ismthout,  if=0, no smoothing in output profiles
+ -1      ! inew=-1(Ne_Cheb),0(Ne_spline) no g'&Ntor_grill; 1 or 2 with g'&Npol_grill
+  1      ! itor,      +-1, Btor direction in right coord{drho,dteta,dfi}
+  1      ! ipol,      +-1, Bpol direction in right coord{drho,dteta,dfi}
+!!!!!!!!!!!!!  grill parameters and input LH spectrum !!!!!!!!!!!!
+  10.0   ! Zplus,    upper grill corner in centimeters
+ -10.0   ! Zminus,   lower grill corner in centimeters
+  11     ! ntet,     theta grid number
+  51     ! nnz,      N_phi grid number
+!!! positive Npar, Nfi or Npol; P_LH(a.units); points<1001, arbitrary spacing.
+ 0.1200000E+01  0.0000000E+00
+ 0.1250000E+01  0.1736051E-01
+ 0.1300000E+01  0.1123874E+00
+ 0.1350000E+01  0.2681778E+00
+ 0.1400000E+01  0.3764881E+00
+ 0.1450000E+01  0.3015955E+00
+ 0.1500000E+01  0.3857051E+00
+ 0.1550000E+01  0.9832998E+00
+ 0.1600000E+01  0.1000000E+01
+ 0.1650000E+01  0.1736051E-01
+ 0.1700000E+01  0.0000000E+00
+0.0	-88888. !first value = part(%) of total power in positive spectrum.
+!! negative Npar, Nfi or Npol; P_LH(a.units); points<1001, arbitrary spacing.
+ 0.14007E+01  0.75512E-01
+ 0.14257E+01  0.92021E-01
+ 0.14507E+01  0.11491E+00
+ 0.14757E+01  0.14817E+00
+ 0.15008E+01  0.19918E+00
+ 0.15258E+01  0.28244E+00
+ 0.15508E+01  0.43786E+00
+ 0.15758E+01  0.77806E+00
+ 0.16008E+01  0.17836E+01
+ 0.16258E+01  0.70595E+01
+ 0.16508E+01  0.16059E+02
+ 0.16758E+01  0.42919E+01
+ 0.17009E+01  0.13420E+01
+ 0.17259E+01  0.62546E+00
+ 0.17509E+01  0.38873E+00
+ 0.17759E+01  0.25059E+00
+ 0.18009E+01  0.16041E+00
+ 0.18259E+01  0.10468E+00
+ 0.18509E+01  0.73501E-01
+ 0.18759E+01  0.57503E-01
+ 0.19010E+01  0.49131E-01
+ 0.19260E+01  0.43439E-01
+ 0.19510E+01  0.37952E-01
+ 0.19760E+01  0.31978E-01
+ 0.20010E+01  0.25814E-01

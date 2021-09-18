@@ -1,0 +1,87 @@
+!!!!!!!!!!!!!  physical parameters !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  0.92    ! Freq,     RF frequency, GHz
+  2.0     ! xmi1,     Mi1/Mp,  relative mass of ions 1
+  1.0     ! zi1,      charge of ions 1
+  16.0     ! xmi2,     Mi2/Mp,  relative mass of ions 2
+  8.0     ! zi2,      charge of ions 2
+  0.03     ! dni2,  0.03   Ni2/Ni1, relative density of ions 2
+  1.0     ! xmi3,     Mi3/Mp,  relative mass of ions 3
+  1.0     ! zi3,      charge of ions 3
+  0.0     ! dni3,     Ni3/Ni1, relative density of ions 3
+!!!!!!!!!!!!!  parameters for alphas calculations !!!!!!!!!!!!!!!!!
+  0       ! itend0,   if = 0, no alphas
+  30.0    ! energy,   max. perp. energy of alphas (MeV)
+  1.0     ! factor,   factor in alpha source
+  0.3     ! dra,      relative alpha source broadening (dr/a)
+  30      ! kv,       V_perp  greed number
+!!!!!!!!!!!!! numerical parameters !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  30      ! nr,       radial grid number  <= 505
+ 1.e-6    ! hmin1,    rel.(hr) min. step in the Fast comp. mode, <1.d0
+ 1.e-4    ! rrange,   rel.(hr) size of a 'turning' point region, <1.d0
+ 1.e-6    ! eps,      accuracy
+ 1.5      ! hdrob,    h4 correction,
+ 0.7      ! cleft,    left Vz plato border shift (<1)
+ 1.5      ! cright,   right Vz plato border shift (>1)
+ 0.25     ! cdel,     (left part)/(Vz plato size)
+ 0.999    ! rbord,    relative radius of reflection, <1.
+ 0.2      ! pchm,     threshold between 'strong' and weak' absorption, <1.
+ 1.e-2    ! pabs,     part of remaining power interp. as absorption
+ 1.e-4    ! pgiter,   relative accuracy to stop iterations
+ 20       ! ni1,      grid number in the left part of Vz plato
+ 20       ! ni2,      grid number in the right part of Vz plato
+ 99       ! niterat,  maximal number of iterations
+ 20       ! nmaxm(1), permitted reflections at 0 iteration
+ 20       ! nmaxm(2), permitted reflections at 1 iteration
+ 20       ! nmaxm(3), permitted reflections at 2 iteration
+ 20       ! nmaxm(4), permitted reflections at 3 iteration
+ 1000     ! maxstep2, maximal steps' number in Fast comp. mode
+ 1000     ! maxstep4, maximal steps' number in Slow comp. mode
+!!!!!!!!!!!!!  options !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  2      ! ipri,      printing output monitoring: 0,1,2,3,4
+  1      ! iw,        initial mode (slow=1, fast=-1)
+  0      ! ismth,     if=0, no smoothing in Ne(rho),Te(rho),Ti(rho)
+  0      ! ismthalf,  if=0, no smoothing in D_alpha(vperp)
+  1      ! ismthout,  if=0, no smoothing in output profiles
+  0      ! inew=0 for usual tokamak&Ntor_grill; 1 or 2 for g' in ST&Npol_grill
+  1      ! itor,      +-1, Btor direction in right coord{drho,dteta,dfi}
+  1      ! ipol,      +-1, Bpol direction in right coord{drho,dteta,dfi}
+!!!!!!!!!!!!!  grill parameters and input LH spectrum !!!!!!!!!!!!
+  8.0   ! Zplus,    upper grill corner in centimeters
+ -8.0   ! Zminus,   lower grill corner in centimeters
+  10     ! ntet,     theta grid number
+  50     ! nnz,      N_phi grid number
+!!positive Nfi; P_LH(a.units); points<10010.0250 0.0423
+0 0
+0 0
+0.0 -88888.0
+5.35	3.727E-6
+5.36	1.866E-5
+5.37	8.365E-5
+5.38	3.355E-4
+5.39	0.001204
+5.4	0.003866
+5.41	0.01111
+5.42	0.02857
+5.43	0.06573
+5.44	0.1353
+5.45	0.2494
+5.46	0.4111
+5.47	0.6065
+5.48	0.8007
+5.49	0.946
+5.5	1
+5.51	0.946
+5.52	0.8007
+5.53	0.6065
+5.54	0.4111
+5.55	0.2494
+5.56	0.1353
+5.57	0.06573
+5.58	0.02857
+5.59	0.01111
+5.6	0.003866
+5.61	0.001204
+5.62	3.355E-4
+5.63	8.365E-5
+5.64	1.866E-5
+5.65	3.727E-6
