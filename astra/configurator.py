@@ -36,6 +36,7 @@ import json
 def init_config():
     global config
     config = default_config()
+    load_config()
 
 def reset_config(b):
     global config
@@ -50,10 +51,11 @@ def reset_config(b):
 def load_config():
     global config
     fp = os.path.abspath("astra.json")
-    with open(fp) as json_file:
-       config = json.load(json_file)
+    if os.path.exists(fp):
+        with open(fp) as json_file:
+            config = json.load(json_file)
 
-def load_config(b):
+def load_config_click(b):
     global config
     with output:
         print('load_config')
@@ -87,16 +89,22 @@ def save_changes(b):
         save_config()
         with output:
             print("save config")
-   
+
+import shutil   
 def prepare_astra(b):
     astra_home = config['Astra config'][0][1]
     exp_file = config['Astra config'][2][1]
+    exp_path = astra_home + '/exp/' + exp_file
     equ_file = config['Astra config'][4][1]
+    equ_path = astra_home + '/equ/' + equ_file
     with output:
-            print("Astra home " + astra_home)
-            print("copy " + exp_file + ' to exp/')
-            print("copy " + equ_file + ' to equ/')
-
+            print("Astra home " + astra_home)    
+    shutil.copyfile(exp_file, exp_path)
+    shutil.copyfile(equ_file, equ_path)    
+    with output:
+            print(" copy " + exp_file + ' to ' + exp_path)
+            print(" copy " + equ_file + ' to ' + equ_path)
+            print(" Please run astra by command: ./a4/.exe/astra " + exp_file + ' ' + equ_file)
 
 
 def widget():
@@ -145,7 +153,7 @@ def widget():
     )    
 
     save_btn.on_click(save_changes)
-    load_btn.on_click(load_config)
+    load_btn.on_click(load_config_click)
     reset_btn.on_click(reset_config)
     prepare_btn.on_click(prepare_astra)
     
