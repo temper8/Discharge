@@ -1,10 +1,10 @@
 def default_astra_config():
     cfg = [
         ["astra_path", "\home\Astra", "Path to astra user folder"],
-        ["exp", "readme", "exp file name"],
-        ["equ", "showdata", "equ file name"],
         ["option1", "op1", "option 1"],
-        ["option2", "op2", "option 2"]
+        ["exp_file", "readme", "exp file name"],
+        ["option2", "op2", "option 2"],
+        ["equ_file", "showdata", "equ file name"]
     ]
     return ('Astra config', cfg)
 
@@ -37,6 +37,34 @@ def init_config():
     global config
     config = default_config()
 
+def reset_config(b):
+    global config
+    config = default_config()    
+    with output:
+        print('reset_config')
+    for items, pp in zip(all_items, config.items()):
+        for w, p in zip(items, pp[1]):
+            if (w.value != p[1]):
+                w.value = p[1]    
+
+def load_config():
+    global config
+    fp = os.path.abspath("astra.json")
+    with open(fp) as json_file:
+       config = json.load(json_file)
+
+def load_config(b):
+    global config
+    with output:
+        print('load_config')
+    fp = os.path.abspath("astra.json")
+    with open(fp) as json_file:
+       config = json.load(json_file)
+    for items, pp in zip(all_items, config.items()):
+        for w, p in zip(items, pp[1]):
+            if (w.value != p[1]):
+                w.value = p[1]
+
 def save_config():
     fp = os.path.abspath("astra.json")
     with open( fp , "w" ) as write:
@@ -44,6 +72,7 @@ def save_config():
 
 def save_changes(b):
     no_changes = True
+    # можно сделать лучше - по ключам проходится
     for items, pp in zip(all_items, config.items()):
         for w, p in zip(items, pp[1]):
             if (w.value != p[1]):
@@ -71,7 +100,7 @@ def widget():
     for pp in config.items():
         items = [widgets.Text(value=p[1], sync=True, description=p[0], disabled=False) for p in pp[1] ]
         all_items.append(items)
-        tab_children.append(widgets.GridBox(items, layout=widgets.Layout(grid_template_columns="repeat(3, 300px)")))
+        tab_children.append(widgets.GridBox(items, layout=widgets.Layout(grid_template_columns="repeat(2, 400px)")))
     tab = widgets.Tab()
     tab.children = tab_children
     for id, p in enumerate(config.items()):
@@ -91,8 +120,17 @@ def widget():
         button_style='', # 'success', 'info', 'warning', 'danger' or ''
         tooltip='Load config',
         icon='check' # (FontAwesome names without the `fa-` prefix)
-       
     )
+    reset_btn = widgets.Button(
+        description='Rest config',
+        disabled=False,
+        button_style='', # 'success', 'info', 'warning', 'danger' or ''
+        tooltip='Reset config',
+        icon='check' # (FontAwesome names without the `fa-` prefix)
+    )    
     save_btn.on_click(save_changes)
-    btn_box = widgets.HBox([load_btn, save_btn])
+    load_btn.on_click(load_config)
+    reset_btn.on_click(reset_config)
+    
+    btn_box = widgets.HBox([load_btn, save_btn, reset_btn])
     return widgets.VBox([widgets.Label('Astra configuration'), tab, btn_box, output])
