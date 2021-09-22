@@ -23,19 +23,39 @@ def default_config():
     sbr_cfg = default_sbr_config()
     return dict([astra_cfg, sbr_cfg])    
 
+import os
 import ipywidgets as widgets
 from IPython.display import display
 
-def widget_config(cfg):
+output = "23423"
+config = 1
+
+import json
+
+def save_config(b):
+    fp = os.path.abspath("astra.json")
+    with open( fp , "w" ) as write:
+        json.dump( config , write, indent = 2 )
+
+def save_changes(b):
+    save_config()
+    file_path = os.path.abspath("xxx1234.dat")
+    with open(file_path, 'w') as f:
+        f.write('btn click')
+    with output:
+            print("btn click")
+
+def widget():
+    output = widgets.Output()
     tab_children = []
     all_items = []
-    for pp in cfg.items():
+    for pp in config.items():
         items = [widgets.Text(value=p[1], sync=True, description=p[0], disabled=False) for p in pp[1] ]
         all_items.append(items)
         tab_children.append(widgets.GridBox(items, layout=widgets.Layout(grid_template_columns="repeat(3, 300px)")))
     tab = widgets.Tab()
     tab.children = tab_children
-    for id, p in enumerate(cfg.items()):
+    for id, p in enumerate(config.items()):
         tab.set_title(id, p[0])
 
     save_btn = widgets.Button(
@@ -44,6 +64,16 @@ def widget_config(cfg):
         button_style='', # 'success', 'info', 'warning', 'danger' or ''
         tooltip='Save config',
         icon='check' # (FontAwesome names without the `fa-` prefix)
+       
     )
-    #save_btn.on_click(save_changes)
-    return widgets.VBox([widgets.Label('Astra configuration'), tab, save_btn])
+    load_btn = widgets.Button(
+        description='Load config',
+        disabled=False,
+        button_style='', # 'success', 'info', 'warning', 'danger' or ''
+        tooltip='Load config',
+        icon='check' # (FontAwesome names without the `fa-` prefix)
+       
+    )
+    save_btn.on_click(save_config)
+    btn_box = widgets.HBox([load_btn, save_btn])
+    return widgets.VBox([widgets.Label('Astra configuration'), tab, btn_box, output])
