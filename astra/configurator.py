@@ -88,6 +88,14 @@ def save_changes(b):
         with output:
             print("save config")
    
+def prepare_astra(b):
+    astra_home = config['Astra config'][0][1]
+    exp_file = config['Astra config'][2][1]
+    equ_file = config['Astra config'][4][1]
+    with output:
+            print("Astra home " + astra_home)
+            print("copy " + exp_file + ' to exp/')
+            print("copy " + equ_file + ' to equ/')
 
 
 
@@ -128,9 +136,18 @@ def widget():
         tooltip='Reset config',
         icon='check' # (FontAwesome names without the `fa-` prefix)
     )    
+    prepare_btn = widgets.Button(
+        description='Prepare to run astra',
+        disabled=False,
+        button_style='', # 'success', 'info', 'warning', 'danger' or ''
+        tooltip='Prepare to run astra',
+        icon='check' # (FontAwesome names without the `fa-` prefix)
+    )    
+
     save_btn.on_click(save_changes)
     load_btn.on_click(load_config)
     reset_btn.on_click(reset_config)
+    prepare_btn.on_click(prepare_astra)
     
-    btn_box = widgets.HBox([load_btn, save_btn, reset_btn])
+    btn_box = widgets.HBox([load_btn, save_btn, reset_btn, prepare_btn])
     return widgets.VBox([widgets.Label('Astra configuration'), tab, btn_box, output])
