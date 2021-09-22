@@ -27,25 +27,44 @@ import os
 import ipywidgets as widgets
 from IPython.display import display
 
-output = "23423"
-config = 1
+output = []
+config = []
+all_items = []
 
 import json
 
-def save_config(b):
+def init_config():
+    global config
+    config = default_config()
+
+def save_config():
     fp = os.path.abspath("astra.json")
     with open( fp , "w" ) as write:
         json.dump( config , write, indent = 2 )
 
 def save_changes(b):
-    save_config()
-    file_path = os.path.abspath("xxx1234.dat")
-    with open(file_path, 'w') as f:
-        f.write('btn click')
-    with output:
-            print("btn click")
+    no_changes = True
+    for items, pp in zip(all_items, config.items()):
+        for w, p in zip(items, pp[1]):
+            if (w.value != p[1]):
+                no_changes = False
+                p[1] = w.value
+                with output:
+                    print(w.value, p)
+    if no_changes:
+        with output:
+            print("no changes")
+    else:                
+        save_config()
+        with output:
+            print("save config")
+   
+
+
 
 def widget():
+    global all_items
+    global output
     output = widgets.Output()
     tab_children = []
     all_items = []
@@ -74,6 +93,6 @@ def widget():
         icon='check' # (FontAwesome names without the `fa-` prefix)
        
     )
-    save_btn.on_click(save_config)
+    save_btn.on_click(save_changes)
     btn_box = widgets.HBox([load_btn, save_btn])
     return widgets.VBox([widgets.Label('Astra configuration'), tab, btn_box, output])
