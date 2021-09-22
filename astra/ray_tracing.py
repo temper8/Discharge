@@ -11,7 +11,7 @@ def default_pp():
     physical_parameters.append(["zi3", 1.0, "charge of ions 3"])
     physical_parameters.append(["dni3", 0.0, "Ni3/Ni1, relative density of ions 3"])
 
-    return 'Physical parameters', physical_parameters
+    return ('Physical parameters', physical_parameters)
 
 def default_alphas():
     p = [
@@ -79,3 +79,58 @@ def default_parameters():
     op = default_option()
     gl = default_grill_parameters()
     return dict([pp, ap, nm, op, gl])
+
+all_items = []
+parameters = []
+output = []
+
+import os
+import ipywidgets as widgets
+from IPython.display import display
+
+
+def init_parameters():
+    global parameters
+    parameters = default_parameters()
+
+def widget():    
+    global parameters
+    global all_items
+    global output
+    tab_children = []
+    all_items = []
+    output = widgets.Output()
+    for pp in parameters.items():
+        items = [widgets.FloatText(value=p[1], sync=True, description=p[0], disabled=False) for p in pp[1] ]
+        all_items.append(items)
+        tab_children.append(widgets.GridBox(items, layout=widgets.Layout(grid_template_columns="repeat(3, 300px)")))    
+
+    
+    def save_changes(b):
+        no_changes = True
+        for items, pp in zip(all_items, parameters.items()):
+            for w, p in zip(items, pp[1]):
+                if (w.value != p[1]):
+                    no_changes = False
+                    p[1] = w.value
+                    with output:
+                        print(w.value, p)
+            if no_changes:
+                with output:
+                    print("no changes")
+
+    tab = widgets.Tab()
+    tab.children = tab_children
+    for id, p in enumerate(parameters.items()):
+        tab.set_title(id, p[0])
+
+    save_btn = widgets.Button(
+        description='Save parameters',
+        disabled=False,
+        button_style='', # 'success', 'info', 'warning', 'danger' or ''
+        tooltip='Save parameters',
+        icon='check' # (FontAwesome names without the `fa-` prefix)
+    )
+    save_btn.on_click(save_changes)
+    
+    return widgets.VBox([widgets.Label('Ray-tracing configuration'), tab, save_btn, output])         
