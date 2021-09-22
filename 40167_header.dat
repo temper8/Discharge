@@ -1,5 +1,5 @@
 !!!!!!!!!!!!!  physical parameters !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  0.6    ! Freq,     RF frequency, GHz
+  0.2    ! Freq,     RF frequency, GHz
   2.0     ! xmi1,     Mi1/Mp,  relative mass of ions 1
   1.0     ! zi1,      charge of ions 1
   16.0     ! xmi2,     Mi2/Mp,  relative mass of ions 2
@@ -38,7 +38,7 @@
  1000     ! maxstep4, maximal steps' number in Slow comp. mode
 !!!!!!!!!!!!!  options !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   2      ! ipri,      printing output monitoring: 0,1,2,3,4
-  1      ! iw,        initial mode (slow=1, fast=-1)
+  -1      ! iw,        initial mode (slow=1, fast=-1)
   0      ! ismth,     if=0, no smoothing in Ne(rho),Te(rho),Ti(rho)
   0      ! ismthalf,  if=0, no smoothing in D_alpha(vperp)
   1      ! ismthout,  if=0, no smoothing in output profiles
