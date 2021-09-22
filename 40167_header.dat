@@ -42,7 +42,7 @@
   0      ! ismth,     if=0, no smoothing in Ne(rho),Te(rho),Ti(rho)
   0      ! ismthalf,  if=0, no smoothing in D_alpha(vperp)
   1      ! ismthout,  if=0, no smoothing in output profiles
- -1      ! inew=0 for usual tokamak&Ntor_grill; 1 or 2 for g' in ST&Npol_grill
+  0      ! inew=0 for usual tokamak&Ntor_grill; 1 or 2 for g' in ST&Npol_grill
   1      ! itor,      +-1, Btor direction in right coord{drho,dteta,dfi}
   1      ! ipol,      +-1, Bpol direction in right coord{drho,dteta,dfi}
 !!!!!!!!!!!!!  grill parameters and input LH spectrum !!!!!!!!!!!!
