@@ -99,9 +99,8 @@ def prepare_astra(b):
     equ_path = astra_home + '/equ/' + equ_file
     with output:
             print("Astra home " + astra_home)    
-    shutil.copyfile(exp_file, exp_path)
-    shutil.copyfile(equ_file, equ_path)    
-    with output:
+            shutil.copyfile(exp_file, exp_path)
+            shutil.copyfile(equ_file, equ_path)    
             print(" copy " + exp_file + ' to ' + exp_path)
             print(" copy " + equ_file + ' to ' + equ_path)
             print(" Please run astra by command: ./a4/.exe/astra " + exp_file + ' ' + equ_file)
