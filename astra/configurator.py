@@ -1,18 +1,18 @@
 def default_astra_config():
     cfg = dict([
-        ("astra_path", ["\home\Astra", "Path to astra user folder"]),
-        ("option1", ["op1", "option 1"]),
-        ("exp_file", ["readme", "exp file name"]),
-        ("option2", ["op2", "option 2"]),
-        ("equ_file", ["showdata", "equ file name"])
+        ("astra_path", ["\home\Astra", "Astra folder", "Path to astra user folder"]),
+        ("option1", ["op1", "option1", "option 1"]),
+        ("exp_file", ["readme", "exp file", "exp file name"]),
+        ("option2", ["op2", "option2", "option 2"]),
+        ("equ_file", ["showdata", "equ file", "equ file name"])
     ])
     return ('Astra config', cfg)
 
 def default_sbr_config():
     cfg = dict([
-        ("sbr1", ["\home\Astra", "subrutine 1"]),
-        ("sbr2", ["readme", "subrutine 2"]),
-        ("sbr3", ["showdata", "subrutine 3"]),
+        ("sbr1", ["", "subrutine 1"]),
+        ("sbr2", ["", "subrutine 2"]),
+        ("sbr3", ["", "subrutine 3"]),
         ("sbr4", ["", "subrutine 4"]),
         ("sbr5", ["", "subrutine 5"])
     ])
