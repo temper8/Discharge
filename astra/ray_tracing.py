@@ -296,3 +296,69 @@ def widget():
     title = widgets.Label('Ray-tracing configuration')
     return widgets.VBox([title, tab, btn_box, output])         
     #return widgets.VBox([title, tab, btn_box, output], layout= { 'height': '400px'})
+
+from collections import namedtuple
+
+def read_bounds(f):
+    Icms_path = os.path.abspath(f)
+    file = open(Icms_path)
+
+    header = file.readline().split()
+    #print(header)
+    lines = file.readlines()
+
+    table = [line.split() for line in lines]
+    table = list(filter(None, table))
+
+    R = [float(row[0]) for row in table]
+    Z = [float(row[1]) for row in table]
+    return R, Z
+
+
+def float_try(str):
+    try:
+        return float(str)
+    except ValueError:
+        return 0.0
+
+def read_trajectories(f):
+    Icms_path = os.path.abspath(f)
+    file = open(Icms_path)
+
+    header = file.readline().replace('=', '_').split()
+
+    empty_ray = dict([ (h, []) for h in header ])
+
+    lines = file.readlines()
+    table = [line.split() for line in lines]
+    table = list(filter(None, table))
+
+    rays = []
+    N_traj = 0
+    #header.append('N_traj')
+    TRay = namedtuple('Ray' , header)
+
+    for row in table:
+        if N_traj != int(row[12]):
+            N_traj = int(row[12])
+            ray = dict([ (h, []) for h in header ])
+            rays.append(ray)
+        for index, (p, item) in enumerate(ray.items()):
+            item.append(float_try(row[index]))
+    return rays, N_traj
+
+def plot(f):
+    rays, max_N_traj = read_trajectories(f)
+    print("Number of traj "+ str(len(rays)) + "   Max N_traj "+ str(max_N_traj))
+    plt.figure(figsize=(6,6))
+
+    R, Z = read_bounds("out/lcms.dat")
+    plt.plot(R, Z)
+
+    for ray in rays:
+        plt.plot(ray['R'], ray['Z'], alpha=0.5, linewidth=1)
+ 
+    plt.show()
+
+def summary():
+    print(" =====  Ray tracing summary ====")

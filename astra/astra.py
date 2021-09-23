@@ -160,3 +160,6 @@ def widget():
     
     btn_box = widgets.HBox([load_btn, save_btn, reset_btn, prepare_btn])
     return widgets.VBox([widgets.Label('Astra configuration'), tab, btn_box, output])
+
+def summary():
+    print(" ======  ASTRA summary =====")
