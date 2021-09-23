@@ -36,7 +36,7 @@ import json
 def init_config():
     global config
     config = default_config()
-#    load_config()
+    load_config()
 
 def reset_config(b):
     global config
