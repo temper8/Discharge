@@ -40,6 +40,7 @@ def init_config():
 
 def reset_config(b):
     global config
+    output.clear_output()
     config = default_config()    
     copy_config()
     with output:
@@ -61,6 +62,7 @@ def load_config():
 
 def load_config_click(b):
     global config
+    output.clear_output()
     load_config()
     copy_config()   
     with output:
@@ -72,6 +74,7 @@ def save_config():
         json.dump( config , write, indent = 2 )
 
 def save_changes(b):
+    output.clear_output()
     no_changes = True
     # можно сделать лучше - по ключам проходится
     for items, (_, cfg) in zip(all_items, config.items()):
