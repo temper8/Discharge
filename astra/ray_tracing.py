@@ -145,6 +145,14 @@ def prepare_rt_dat():
 def init_parameters():
     global parameters
     parameters = default_parameters()
+    load_parameters()
+
+def load_parameters():
+    global parameters
+    fp = os.path.abspath(parameters_file)
+    if os.path.exists(fp):
+        with open(fp) as json_file:
+            parameters = json.load(json_file)   
 
 def save_parameters():
     fp = os.path.abspath(parameters_file)
@@ -379,3 +387,7 @@ def summary():
     for i in range(n):
         print('{0:35}  {1:35} {2:35}'.format(lines[i], lines[i+n], lines[i+2* n]))
 
+def plot_spectrum():
+    sp = parameters['Spectrum']
+    fig, ax = plt.subplots(constrained_layout=True, figsize=(5, 2.5))
+    ax.plot(sp['Ntor'], sp['Amp'])  
