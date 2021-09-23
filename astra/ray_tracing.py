@@ -80,17 +80,67 @@ def default_parameters():
     return dict([pp, ap, nm, op, gl])
 
 import os
+from typing import DefaultDict
 from IPython.core.display import JSON
 import ipywidgets as widgets
 from IPython.display import display
 import json
+import matplotlib.pyplot as plt
 
 all_items = []
 parameters = []
 output = []
 parameters_file = "ray_tracing_cfg.json"
 
+def divide_spectrum():
+    sp = [x for x in zip(parameters['Spectrum']['Ntor'], parameters['Spectrum']['Amp'])]
+    sp_pos = [ (s[0], s[1]) for s in sp if s[0]>0]
+    sp_neg = [ (-s[0], s[1]) for s in sp if s[0]<0]
+    sp_neg = list(reversed(sp_neg))
+    return sp_pos, sp_neg
 
+def prepare_spectrum():
+    out_lines = []
+    sp_pos, sp_neg = divide_spectrum()
+    out_lines.append("!!positive Nfi; P_LH(a.units); points<1001\n")
+    for s in sp_pos:
+        out_lines.append(str(s[0]) + "   " + str(s[1])+"\n")
+    with output:    
+        print(len(out_lines))
+
+    power = 1.0
+    out_lines.append(str(power) + '	-88888. !0.57 first value=part(%) of total power in positive spectrum.\n')
+    out_lines.append('!!negative Nfi; P_LH(a.units); points number<1001, arbitrary spacing.\n')
+
+    for s in sp_neg:
+        out_lines.append(str(s[0]) + "   " + str(s[1])+"\n")
+    with output:
+        print(len(out_lines))
+    return out_lines
+
+
+def prepare_dat_file():
+    lines = []
+    def item_to_line(name, v):
+        vs = str(v[0])
+        return '  ' + vs + ' '*(9-len(vs)) + "  ! " + name + ' '*(15-len(name)) + v[1] + '\n'
+
+    for section_name, items in parameters.items():
+        if section_name == "Spectrum":
+            with output:
+                print(section_name)      
+            lines += prepare_spectrum()
+        else:
+            lines.append("!"*15 + " "+ section_name + " "+ "!"*(60-len(section_name)) + "\n")
+            lines += [ item_to_line(name, v) for name, v in items.items()]
+    return lines
+
+def prepare_rt_dat():
+    lines = prepare_dat_file()
+    file_path = os.path.abspath("rt_cfg.dat")
+    with open(file_path, 'w') as f:
+        for line in lines:
+            f.write(line)
 
 def init_parameters():
     global parameters
@@ -119,14 +169,22 @@ def widget():
     tab_children = []
     all_items = []
     output = widgets.Output()
-    for _, par in parameters.items():
-        items = [widgets.FloatText(value=v[0], sync=True, description=p, disabled=False) for p, v in par.items() ]
-        all_items.append(items)
-        tab_children.append(widgets.GridBox(items, layout=widgets.Layout(grid_template_columns="repeat(3, 300px)")))    
+    for name, par in parameters.items():
+        if name == 'Spectrum':
+            out = widgets.Output(layout= {'border': '1px solid blue', 'height': '300px', 'width': '100%'})
+            with out:
+                fig, ax = plt.subplots(constrained_layout=True, figsize=(5, 2.5))
+                ax.plot(par['Ntor'], par['Amp'])                
+            tab_children.append(widgets.Box([out]))    
+        else:
+            items = [widgets.FloatText(value=v[0], sync=True, description=p, disabled=False) for p, v in par.items() ]
+            all_items.append(items)
+            tab_children.append(widgets.GridBox(items, layout=widgets.Layout(grid_template_columns="repeat(3, 300px)")))    
 
     def prepare_click(b):
+        prepare_rt_dat()
         with output:
-                print("prepare ")
+                print("prepare config for run rt")
 
     def reset_click(b):
         with output:
@@ -189,5 +247,6 @@ def widget():
     prepare_btn.on_click(prepare_click)
     
     btn_box = widgets.HBox([load_btn, save_btn, reset_btn, prepare_btn])
-
-    return widgets.VBox([widgets.Label('Ray-tracing configuration'), tab, btn_box, output])         
+    title = widgets.Label('Ray-tracing configuration')
+    return widgets.VBox([title, tab, btn_box, output])         
+    #return widgets.VBox([title, tab, btn_box, output], layout= { 'height': '400px'})
