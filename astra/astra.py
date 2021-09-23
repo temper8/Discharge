@@ -162,4 +162,12 @@ def widget():
     return widgets.VBox([widgets.Label('Astra configuration'), tab, btn_box, output])
 
 def summary():
+    init_config()
     print(" ======  ASTRA summary =====")
+    astra_home = config['Astra config']['astra_path']
+    exp_file = config['Astra config']['exp_file']
+    equ_file = config['Astra config']['equ_file']
+    
+    print('{0:12}  {1}'.format(astra_home[1], astra_home[0]))
+    print('{0:12}  {1}'.format(exp_file[1], exp_file[0]))
+    print('{0:12}  {1}'.format(equ_file[1], equ_file[0]))
