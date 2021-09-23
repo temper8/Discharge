@@ -1,21 +1,21 @@
 def default_astra_config():
-    cfg = [
-        ["astra_path", "\home\Astra", "Path to astra user folder"],
-        ["option1", "op1", "option 1"],
-        ["exp_file", "readme", "exp file name"],
-        ["option2", "op2", "option 2"],
-        ["equ_file", "showdata", "equ file name"]
-    ]
+    cfg = dict([
+        ("astra_path", ["\home\Astra", "Path to astra user folder"]),
+        ("option1", ["op1", "option 1"]),
+        ("exp_file", ["readme", "exp file name"]),
+        ("option2", ["op2", "option 2"]),
+        ("equ_file", ["showdata", "equ file name"])
+    ])
     return ('Astra config', cfg)
 
 def default_sbr_config():
-    cfg = [
-        ["sbr1", "\home\Astra", "subrutine 1"],
-        ["sbr2", "readme", "subrutine 2"],
-        ["sbr3", "showdata", "subrutine 3"],
-        ["sbr4", "", "subrutine 4"],
-        ["sbr5", "", "subrutine 5"]
-    ]
+    cfg = dict([
+        ("sbr1", ["\home\Astra", "subrutine 1"]),
+        ("sbr2", ["readme", "subrutine 2"]),
+        ("sbr3", ["showdata", "subrutine 3"]),
+        ("sbr4", ["", "subrutine 4"]),
+        ("sbr5", ["", "subrutine 5"])
+    ])
     return ('Subrutine config', cfg)
 
 def default_config():
@@ -30,58 +30,57 @@ from IPython.display import display
 output = []
 config = []
 all_items = []
-
+config_file ='astra_config.json'
 import json
 
 def init_config():
     global config
     config = default_config()
-    load_config()
+#    load_config()
 
 def reset_config(b):
     global config
     config = default_config()    
+    copy_config()
     with output:
         print('reset_config')
-    for items, pp in zip(all_items, config.items()):
-        for w, p in zip(items, pp[1]):
-            if (w.value != p[1]):
-                w.value = p[1]    
+
+
+def copy_config():
+    for items, (_, cfg) in zip(all_items, config.items()):
+        for w, (_,v) in zip(items, cfg.items()):
+            if (w.value != v[0]):
+                w.value = v[0]
 
 def load_config():
     global config
-    fp = os.path.abspath("astra.json")
+    fp = os.path.abspath(config_file)
     if os.path.exists(fp):
         with open(fp) as json_file:
             config = json.load(json_file)
 
 def load_config_click(b):
     global config
+    load_config()
+    copy_config()   
     with output:
         print('load_config')
-    fp = os.path.abspath("astra.json")
-    with open(fp) as json_file:
-       config = json.load(json_file)
-    for items, pp in zip(all_items, config.items()):
-        for w, p in zip(items, pp[1]):
-            if (w.value != p[1]):
-                w.value = p[1]
 
 def save_config():
-    fp = os.path.abspath("astra.json")
+    fp = os.path.abspath(config_file)
     with open( fp , "w" ) as write:
         json.dump( config , write, indent = 2 )
 
 def save_changes(b):
     no_changes = True
     # можно сделать лучше - по ключам проходится
-    for items, pp in zip(all_items, config.items()):
-        for w, p in zip(items, pp[1]):
-            if (w.value != p[1]):
+    for items, (_, cfg) in zip(all_items, config.items()):
+        for w, (_,v) in zip(items, cfg.items()):
+            if (w.value != v[0]):
                 no_changes = False
-                p[1] = w.value
+                v[0] = w.value
                 with output:
-                    print(w.value, p)
+                    print(w.value, v)
     if no_changes:
         with output:
             print("no changes")
@@ -92,10 +91,10 @@ def save_changes(b):
 
 import shutil   
 def prepare_astra(b):
-    astra_home = config['Astra config'][0][1]
-    exp_file = config['Astra config'][2][1]
+    astra_home = config['Astra config']['astra_path'][0]
+    exp_file = config['Astra config']['exp_file'][0]
     exp_path = astra_home + '/exp/' + exp_file
-    equ_file = config['Astra config'][4][1]
+    equ_file = config['Astra config']['equ_file'][0]
     equ_path = astra_home + '/equ/' + equ_file
     with output:
             print("Astra home " + astra_home)    
@@ -112,8 +111,8 @@ def widget():
     output = widgets.Output()
     tab_children = []
     all_items = []
-    for pp in config.items():
-        items = [widgets.Text(value=p[1], sync=True, description=p[0], disabled=False) for p in pp[1] ]
+    for _, cfg in config.items():
+        items = [widgets.Text(value=v[0], sync=True, description=v[1], disabled=False) for key, v in cfg.items() ]
         all_items.append(items)
         tab_children.append(widgets.GridBox(items, layout=widgets.Layout(grid_template_columns="repeat(2, 400px)")))
     tab = widgets.Tab()
