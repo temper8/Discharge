@@ -18,7 +18,7 @@ def default_alphas():
         ("energy", [30.0, "max. perp. energy of alphas (MeV)"]),
         ("factor", [1.0, "factor in alpha source"]),
         ("dra", [0.3, "relative alpha source broadening (dr/a)"]),
-        ("kv", [30.0, "V_perp  greed number"])
+        ("kv", [30, "V_perp  greed number"])
     ])
     return ('Parameters for alphas calculations', p)
 
@@ -162,6 +162,43 @@ def update_widget_items():
                     print(p, w.value)
     return no_changes
 
+import os
+import shutil
+import astra
+
+def remove_folder_contents(path):
+    shutil.rmtree(path, ignore_errors=True)
+    os.makedirs(path)
+
+def pick_up_results(b):
+    astra_home = astra.config['Astra config']['astra_path'][0]
+    src = astra_home + '/lhcd/out' 
+    dst = 'out/'
+    filenames = next(os.walk(src), (None, None, []))[2]
+    remove_folder_contents(dst)
+    for f in filenames:
+        shutil.copyfile(src + "/"+ f, dst + f)
+    with output:
+            print( ' src folder:')
+            print( ' '+ src)
+            print(' Files:' + str(len(filenames)))    
+            print(" dest " + dst) 
+
+def prepare_astra():
+    astra_home = astra.config['Astra config']['astra_path'][0]
+    exp_file = astra.config['Astra config']['exp_file'][0]
+    equ_file = astra.config['Astra config']['equ_file'][0]
+    dat_file = 'rt_cfg.dat'
+    dat_path = astra_home + '/lhcd/' + dat_file
+    out_folder = astra_home + '/lhcd/out' 
+    with output:
+            print(" Astra home " + astra_home)    
+            shutil.copyfile(dat_file, dat_path)
+            print(" Copy " + dat_file + ' to ' + dat_path)
+            remove_folder_contents(out_folder)
+            print(' Clear folder: ' + out_folder)
+            print(" Please run astra by command: ./a4/.exe/astra " + exp_file + ' ' + equ_file)
+
 def widget():    
     global parameters
     global all_items
@@ -183,6 +220,7 @@ def widget():
 
     def prepare_click(b):
         prepare_rt_dat()
+        prepare_astra()
         with output:
                 print("prepare config for run rt")
 
@@ -240,13 +278,21 @@ def widget():
         tooltip='Prepare to run',
         icon='check' # (FontAwesome names without the `fa-` prefix)
     )   
+    pick_up_btn = widgets.Button(
+        description='Pick up results',
+        disabled=False,
+        button_style='', # 'success', 'info', 'warning', 'danger' or ''
+        tooltip='Pick up results',
+        icon='check' # (FontAwesome names without the `fa-` prefix)
+    )   
 
     save_btn.on_click(save_click)
     load_btn.on_click(load_click)
     reset_btn.on_click(reset_click)
     prepare_btn.on_click(prepare_click)
+    pick_up_btn.on_click(pick_up_results)
     
-    btn_box = widgets.HBox([load_btn, save_btn, reset_btn, prepare_btn])
+    btn_box = widgets.HBox([load_btn, save_btn, reset_btn, prepare_btn, pick_up_btn])
     title = widgets.Label('Ray-tracing configuration')
     return widgets.VBox([title, tab, btn_box, output])         
     #return widgets.VBox([title, tab, btn_box, output], layout= { 'height': '400px'})
