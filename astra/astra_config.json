@@ -1,0 +1,51 @@
+{
+  "Astra config": {
+    "astra_path": [
+      "D:\\cygwin64\\home\\tmp8\\ASTRA-6\\a4",
+      "Astra folder",
+      "Path to astra user folder"
+    ],
+    "option1": [
+      "op1",
+      "option1",
+      "option 1"
+    ],
+    "exp_file": [
+      "40167exp_01",
+      "exp file",
+      "exp file name"
+    ],
+    "option2": [
+      "op2",
+      "option2",
+      "option 2"
+    ],
+    "equ_file": [
+      "40167equ_01",
+      "equ file",
+      "equ file name"
+    ]
+  },
+  "Subrutine config": {
+    "sbr1": [
+      "",
+      "subrutine 1"
+    ],
+    "sbr2": [
+      "",
+      "subrutine 2"
+    ],
+    "sbr3": [
+      "",
+      "subrutine 3"
+    ],
+    "sbr4": [
+      "",
+      "subrutine 4"
+    ],
+    "sbr5": [
+      "",
+      "subrutine 5"
+    ]
+  }
+}
