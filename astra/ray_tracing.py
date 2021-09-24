@@ -368,6 +368,26 @@ def plot(f):
  
     plt.show()
 
+def summary4():
+    print(" ====================  Ray tracing summary ====================")
+    init_parameters()
+    
+    for name, par in parameters.items():
+        if name != 'Spectrum':
+            print(' ====== {0} ======'.format(name))
+            lines = []
+            for p, v in par.items():
+                lines.append('{0:8}  {1}'.format(p, v[0]))
+            max = len(lines)
+            n = int(max/3) + 1
+            #print(max, n)
+            lines.append('')
+            lines.append('')
+            lines.append('')
+            for i in range(n):
+                print('{0:35}  {1:35} {2:35}'.format(lines[i], lines[i+n], lines[i+2* n]))
+
+
 def summary():
     print(" ====================  Ray tracing summary ====================")
     init_parameters()
