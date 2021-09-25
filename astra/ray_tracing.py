@@ -1,24 +1,24 @@
 def default_pp():
     p = {
-    "Freq": [ 5.0, 'float', "RF frequency, GHz"],
-    "xmi1": [2.0, 'float', "Mi1/Mp,  relative mass of ions 1"],
+    "Freq": [ 5.0, 'GHz', "RF frequency, GHz"],
+    "xmi1": [2.0, 'Mi1/Mp', "Mi1/Mp,  relative mass of ions 1"],
     "zi1": [1.0, 'float', "charge of ions 1"],
-    "xmi2": [16.0, 'float', " Mi2/Mp,  relative mass of ions 2"],
+    "xmi2": [16.0, 'Mi2/Mp', " Mi2/Mp,  relative mass of ions 2"],
     "zi2": [8.0, 'float', "charge of ions 2"],
-    "dni2": [0.03, 'float', "Ni2/Ni1, relative density of ions 2"],
-    "xmi3": [1.0, 'float', "Mi3/Mp,  relative mass of ions 3"],
+    "dni2": [0.03, 'Ni2/Ni1', "Ni2/Ni1, relative density of ions 2"],
+    "xmi3": [1.0, 'Mi3/Mp', "Mi3/Mp,  relative mass of ions 3"],
     "zi3": [1.0, 'float', "charge of ions 3"],
-    "dni3": [0.0, 'float', "Ni3/Ni1, relative density of ions 3"]
+    "dni3": [0.0, 'Ni3/Ni1', "Ni3/Ni1, relative density of ions 3"]
     }
     return ('Physical parameters', p)
 
 def default_alphas():
     p = {
         "itend0": [0, 'int', "if = 0, no alphas"],
-        "energy": [30.0, 'float', "max. perp. energy of alphas (MeV)"],
+        "energy": [30.0, 'MeV', "max. perp. energy of alphas (MeV)"],
         "factor": [1.0, 'float', "factor in alpha source"],
-        "dra": [0.3, 'float', "relative alpha source broadening (dr/a)"],
-        "kv": [30, 'float', "V_perp  greed number"]
+        "dra": [0.3, 'dr/a', "relative alpha source broadening (dr/a)"],
+        "kv": [30, 'int', "V_perp  greed number"]
     }
     return ('Parameters for alphas calculations', p)
 
@@ -85,6 +85,7 @@ from IPython.core.display import JSON
 import ipywidgets as widgets
 from IPython.display import display
 import json
+from ipywidgets.widgets.widget_description import DescriptionStyle
 import matplotlib.pyplot as plt
 
 all_items = []
@@ -207,11 +208,14 @@ def prepare_astra():
             print(' Clear folder: ' + out_folder)
             print(" Please run astra by command: ./a4/.exe/astra " + exp_file + ' ' + equ_file)
 
+style = {'description_width': '100px', "data-toggle": "tooltip"}
+layout = {'width': '300px'}
+
 def NumberTextWidget(des, v):
     if v[1] == 'int':
-        return widgets.IntText(value=v[0], sync=True, description=des, disabled=False, layout= {'width': '250px'})
+        return widgets.IntText(value=v[0], tooltip=v[1], description=des, disabled=False, style = style, layout= layout)
     else:
-        return widgets.FloatText(value=v[0], step=0.1, sync=True, description=des, disabled=False, layout= {'width': '250px'})
+        return widgets.FloatText(value=v[0], description='{0} ({1})'.format(des,v[1]), disabled=False,style = style, layout= layout)
 
 def widget():    
     global parameters
@@ -230,7 +234,7 @@ def widget():
         else:
             items = [ NumberTextWidget(key, v) for key, v in par.items() ]
             all_items.append(items)
-            tab_children.append(widgets.GridBox(items, layout=widgets.Layout(grid_template_columns="repeat(4, 250px)")))    
+            tab_children.append(widgets.GridBox(items, layout=widgets.Layout(grid_template_columns="repeat(3, 300px)")))    
 
     def prepare_click(b):
         prepare_rt_dat()
