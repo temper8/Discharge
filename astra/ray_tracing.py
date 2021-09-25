@@ -1,74 +1,74 @@
 def default_pp():
-    p = dict([
-    ("Freq", [ 5.0, "RF frequency, GHz"]),
-    ("xmi1", [2.0, "Mi1/Mp,  relative mass of ions 1"]),
-    ("zi1", [1.0, "charge of ions 1"]),
-    ("xmi2", [16.0, " Mi2/Mp,  relative mass of ions 2"]),
-    ("zi2", [8.0, "charge of ions 2"]),
-    ("dni2", [0.03, "Ni2/Ni1, relative density of ions 2"]),
-    ("xmi3", [1.0, "Mi3/Mp,  relative mass of ions 3"]),
-    ("zi3", [1.0, "charge of ions 3"]),
-    ("dni3", [0.0, "Ni3/Ni1, relative density of ions 3"])
-    ])
+    p = {
+    "Freq": [ 5.0, 'float', "RF frequency, GHz"],
+    "xmi1": [2.0, 'float', "Mi1/Mp,  relative mass of ions 1"],
+    "zi1": [1.0, 'float', "charge of ions 1"],
+    "xmi2": [16.0, 'float', " Mi2/Mp,  relative mass of ions 2"],
+    "zi2": [8.0, 'float', "charge of ions 2"],
+    "dni2": [0.03, 'float', "Ni2/Ni1, relative density of ions 2"],
+    "xmi3": [1.0, 'float', "Mi3/Mp,  relative mass of ions 3"],
+    "zi3": [1.0, 'float', "charge of ions 3"],
+    "dni3": [0.0, 'float', "Ni3/Ni1, relative density of ions 3"]
+    }
     return ('Physical parameters', p)
 
 def default_alphas():
-    p = dict([
-        ("itend0", [0, "if = 0, no alphas"]),
-        ("energy", [30.0, "max. perp. energy of alphas (MeV)"]),
-        ("factor", [1.0, "factor in alpha source"]),
-        ("dra", [0.3, "relative alpha source broadening (dr/a)"]),
-        ("kv", [30, "V_perp  greed number"])
-    ])
+    p = {
+        "itend0": [0, 'int', "if = 0, no alphas"],
+        "energy": [30.0, 'float', "max. perp. energy of alphas (MeV)"],
+        "factor": [1.0, 'float', "factor in alpha source"],
+        "dra": [0.3, 'float', "relative alpha source broadening (dr/a)"],
+        "kv": [30, 'float', "V_perp  greed number"]
+    }
     return ('Parameters for alphas calculations', p)
 
 def default_numerical():
-    p = dict([
-        ("nr",[ 30, "radial grid number  <= 505"]),
-        ("hmin1",[ 1.e-6, "rel.(hr) min. step in the Fast comp. mode, <1.d0"]),
-        ("rrange", [ 1.e-4, "rel.(hr) size of a 'turning' point region, <1.d0"]),
-        ("eps", [1.e-6, "accuracy"]),
-        ("hdrob", [1.5, "h4 correction"]),
-        ("cleft", [0.7 , "left Vz plato border shift (<1)"]),
-        ("cright", [ 1.5, "right Vz plato border shift (>1)"]),
-        ("cdel",[0.25 , "(left part)/(Vz plato size)"]),
-        ("rbord", [ 0.999, "relative radius of reflection, <1."]),
-        ("pchm", [0.2, "threshold between 'strong' and weak' absorption, <1."]),
-        ("pabs",[ 1.e-2 , "part of remaining power interp. as absorption"]),
-        ("pgiter", [1.e-4 , "relative accuracy to stop iterations"]),
-        ("ni1", [20 , "grid number in the left part of Vz plato"]),
-        ("ni2", [20, "grid number in the right part of Vz plato"]),
-        ("niterat", [99, "maximal number of iterations"]),
-        ("nmaxm(1)", [20, "permitted reflections at 0 iteration"]),
-        ("nmaxm(2)", [20, "permitted reflections at 1 iteration"]),
-        ("nmaxm(3)", [20, "permitted reflections at 2 iteration"]),
-        ("nmaxm(4)", [20, "permitted reflections at 3 iteration"]),
-        ("maxstep2", [1000, "maximal steps' number in Fast comp. mode"]),
-        ("maxstep4", [1000, "maximal steps' number in Slow comp. mode"])
-    ])
+    p = {
+        "nr":     [30,'int', "radial grid number  <= 505"],
+        "hmin1":  [1.e-6, 'float', "rel.(hr) min. step in the Fast comp. mode, <1.d0"],
+        "rrange": [ 1.e-4, 'float', "rel.(hr) size of a 'turning' point region, <1.d0"],
+        "eps":    [1.e-6, 'float', "accuracy"],
+        "hdrob":  [1.5, 'float', "h4 correction"],
+        "cleft":  [0.7, 'float', "left Vz plato border shift (<1)"],
+        "cright": [1.5, 'float', "right Vz plato border shift (>1)"],
+        "cdel":   [0.25, 'float', "(left part)/(Vz plato size)"],
+        "rbord":  [ 0.999, 'float', "relative radius of reflection, <1."],
+        "pchm":   [0.2, 'float', "threshold between 'strong' and weak' absorption, <1."],
+        "pabs":   [1.e-2, 'float', "part of remaining power interp. as absorption"],
+        "pgiter": [1.e-4, 'float', "relative accuracy to stop iterations"],
+        "ni1":    [20,'int', "grid number in the left part of Vz plato"],
+        "ni2":    [20,'int', "grid number in the right part of Vz plato"],
+        "niterat":  [99,'int', "maximal number of iterations"],
+        "nmaxm(1)": [20,'int', "permitted reflections at 0 iteration"],
+        "nmaxm(2)": [20,'int', "permitted reflections at 1 iteration"],
+        "nmaxm(3)": [20,'int', "permitted reflections at 2 iteration"],
+        "nmaxm(4)": [20,'int', "permitted reflections at 3 iteration"],
+        "maxstep2": [1000,'int', "maximal steps' number in Fast comp. mode"],
+        "maxstep4": [1000,'int', "maximal steps' number in Slow comp. mode"]
+    }
     return ('Numerical parameters', p)
 
 def default_option():
-    p =  dict([
-        ('ipri', [2, 'printing output monitoring: 0,1,2,3,4']),
-        ('iw', [1, 'initial mode (slow=1, fast=-1)']),
-        ('ismth', [0, 'if=0, no smoothing in Ne(rho),Te(rho),Ti(rho)']),
-        ('ismthalf', [0, 'if=0, no smoothing in D_alpha(vperp)']),
-        ('ismthout', [1, 'if=0, no smoothing in output profiles']),
-        ('inew', [-1, "inew=0 for usual tokamak&Ntor_grill; 1 or 2 for g' in ST&Npol_grill"]),
-        ('itor', [1, '+-1, Btor direction in right coord{drho,dteta,dfi}']),
-        ('ipol', [1, '+-1, Bpol direction in right coord{drho,dteta,dfi}'])
-        ])
+    p = {
+        'ipri': [2,'int', 'printing output monitoring: 0,1,2,3,4'],
+        'iw': [1,'int', 'initial mode (slow=1, fast=-1)'],
+        'ismth': [0,'int', 'if=0, no smoothing in Ne(rho),Te(rho),Ti(rho)'],
+        'ismthalf': [0,'int', 'if=0, no smoothing in D_alpha(vperp)'],
+        'ismthout': [1,'int', 'if=0, no smoothing in output profiles'],
+        'inew': [-1,'int', "inew=0 for usual tokamak&Ntor_grill; 1 or 2 for g' in ST&Npol_grill"],
+        'itor': [1,'int', '+-1, Btor direction in right coord{drho,dteta,dfi}'],
+        'ipol': [1,'int', '+-1, Bpol direction in right coord{drho,dteta,dfi}']
+    }
     return ('Options', p)
 
 
 def default_grill_parameters():
-    p = dict([
-        ('Zplus', [11,'upper grill corner in centimeters']),
-        ('Zminus', [-11,'lower grill corner in centimeters']),
-        ('ntet',[21, 'theta grid number']),
-        ('nnz',[51 ,'iN_phi grid number'])
-        ])
+    p = {
+        'Zplus': [11,'int', 'upper grill corner in centimeters'],
+        'Zminus': [-11,'int', 'lower grill corner in centimeters'],
+        'ntet': [21,'int', 'theta grid number'],
+        'nnz': [51,'int','iN_phi grid number']
+    }
     return ('grill parameters and input LH spectrum', p)      
 
 def default_parameters():
@@ -207,6 +207,12 @@ def prepare_astra():
             print(' Clear folder: ' + out_folder)
             print(" Please run astra by command: ./a4/.exe/astra " + exp_file + ' ' + equ_file)
 
+def NumberTextWidget(des, v):
+    if v[1] == 'int':
+        return widgets.IntText(value=v[0], sync=True, description=des, disabled=False, layout= {'width': '250px'})
+    else:
+        return widgets.FloatText(value=v[0], step=0.1, sync=True, description=des, disabled=False, layout= {'width': '250px'})
+
 def widget():    
     global parameters
     global all_items
@@ -222,9 +228,9 @@ def widget():
                 ax.plot(par['Ntor'], par['Amp'])                
             tab_children.append(widgets.Box([out]))    
         else:
-            items = [widgets.FloatText(value=v[0], sync=True, description=p, disabled=False) for p, v in par.items() ]
+            items = [ NumberTextWidget(key, v) for key, v in par.items() ]
             all_items.append(items)
-            tab_children.append(widgets.GridBox(items, layout=widgets.Layout(grid_template_columns="repeat(3, 300px)")))    
+            tab_children.append(widgets.GridBox(items, layout=widgets.Layout(grid_template_columns="repeat(4, 250px)")))    
 
     def prepare_click(b):
         prepare_rt_dat()
