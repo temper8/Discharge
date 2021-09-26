@@ -77,7 +77,7 @@ def default_parameters():
     nm = default_numerical()
     op = default_option()
     gl = default_grill_parameters()
-    sp = ('LH spectrum', []) 
+    sp = ('LH spectrum', {'Ntor':[], 'Amp':[]}) 
     return dict([pp, ap, nm, op, gl, sp])
 
 
@@ -177,8 +177,13 @@ def update_widget_items():
                     w.value = v[0]
                     with output:
                         print(p, w.value)
-    
-
+        else:
+            out = items #layout= {'border': '1px solid blue', 'height': '300px', 'width': '100%'})
+            out.clear_output()
+            with out:
+                fig, ax = plt.subplots(constrained_layout=True, figsize=(6, 3))
+                ax.plot(par['Ntor'], par['Amp'])                
+            #tab_children.append(out)   
 
 def remove_folder_contents(path):
     shutil.rmtree(path, ignore_errors=True)
@@ -232,6 +237,7 @@ def widget():
     for name, par in parameters.items():
         if name == 'LH spectrum':
             out = widgets.Output() #layout= {'border': '1px solid blue', 'height': '300px', 'width': '100%'})
+            all_items.append(out)
             with out:
                 fig, ax = plt.subplots(constrained_layout=True, figsize=(6, 3))
                 ax.plot(par['Ntor'], par['Amp'])                
