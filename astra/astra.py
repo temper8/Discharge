@@ -24,7 +24,7 @@ def default_config():
             "astra_path": ["\home\Astra", "Astra folder", "Path to astra user folder"],
             "exp_file": ["readme", "exp file", "exp file name"],
             "equ_file": ["showdata", "equ file", "equ file name"],
-            "copy_sbr": [False, "Copy sbr", "Auto copy subroutine"]
+            "copy_sbr": [False, "Copy subroutine", "Auto copy subroutine"]
         },
         'Subrutine config': {
             "sbr1": ["", "subrutine 1"],
@@ -66,6 +66,7 @@ def copy_config():
     widget_list[0].value = config['Astra config']['astra_path'][0]
     widget_list[1].value = config['Astra config']['exp_file'][0]
     widget_list[2].value = config['Astra config']['equ_file'][0]
+    widget_list[3].value = config['Astra config']['copy_sbr'][0]    
         
 
 def load_config():
@@ -87,6 +88,7 @@ def save_config():
     config['Astra config']['astra_path'][0] = widget_list[0].value 
     config['Astra config']['exp_file'][0] = widget_list[1].value 
     config['Astra config']['equ_file'][0] = widget_list[2].value 
+    config['Astra config']['copy_sbr'][0] = widget_list[3].value 
     fp = os.path.abspath(config_file)
     with open( fp , "w" ) as write:
         json.dump( config , write, indent = 2 )
@@ -105,12 +107,18 @@ def prepare_astra(b):
     exp_path = astra_home + '/exp/' + exp_file
     equ_file = config['Astra config']['equ_file'][0]
     equ_path = astra_home + '/equ/' + equ_file
+    sbr_list = next(os.walk(os.path.abspath('sbr/')), (None, None, []))[2]
     with output:
             print("Astra home " + astra_home)    
             shutil.copyfile(exp_file, exp_path)
             shutil.copyfile(equ_file, equ_path)    
             print(" copy " + exp_file + ' to ' + exp_path)
             print(" copy " + equ_file + ' to ' + equ_path)
+            if config['Astra config']['copy_sbr'][0]:
+                for sbr in sbr_list:
+                    sbr_file = 'sbr/'+ sbr
+                    srb_dst = astra_home + '/sbr/' + sbr
+                    print(" copy " + sbr_file + ' to ' + srb_dst)
             print(" Please run astra by command: ./a4/.exe/astra " + exp_file + ' ' + equ_file)
 
 widget_list = []            
