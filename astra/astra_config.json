@@ -5,25 +5,20 @@
       "Astra folder",
       "Path to astra user folder"
     ],
-    "option1": [
-      "op1",
-      "option1",
-      "option 1"
-    ],
     "exp_file": [
-      "40167exp_01",
+      "40167_01.exp",
       "exp file",
       "exp file name"
     ],
-    "option2": [
-      "op2",
-      "option2",
-      "option 2"
-    ],
     "equ_file": [
-      "40167equ_01",
+      "40167_02.equ",
       "equ file",
       "equ file name"
+    ],
+    "copy_sbr": [
+      false,
+      "Copy sbr",
+      "Auto copy subroutine"
     ]
   },
   "Subrutine config": {
