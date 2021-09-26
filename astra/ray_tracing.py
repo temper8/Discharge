@@ -126,7 +126,7 @@ def prepare_dat_file():
     lines = []
     def item_to_line(name, v):
         vs = str(v[0])
-        return '  ' + vs + ' '*(9-len(vs)) + "  ! " + name + ' '*(15-len(name)) + v[1] + '\n'
+        return '  ' + vs + ' '*(9-len(vs)) + "  ! " + name + ' '*(15-len(name)) + v[2] + '\n'
 
     for section_name, items in parameters.items():
         if section_name == "LH spectrum":
@@ -135,7 +135,7 @@ def prepare_dat_file():
             lines += prepare_spectrum()
         else:
             lines.append("!"*15 + " "+ section_name + " "+ "!"*(60-len(section_name)) + "\n")
-            lines += [ item_to_line(name, v) for name, v in items.items()]
+            lines += [ item_to_line(name, v) for name, v in items.items() if name !='total power']
     return lines
 
 def prepare_rt_dat():
@@ -436,6 +436,6 @@ def summary():
         print('{0:35}  {1:35} {2:35}'.format(lines[i], lines[i+n], lines[i+2* n]))
 
 def plot_spectrum():
-    sp = parameters['Spectrum']
+    sp = parameters['LH spectrum']
     fig, ax = plt.subplots(constrained_layout=True, figsize=(5, 2.5))
     ax.plot(sp['Ntor'], sp['Amp'])  
