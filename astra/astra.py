@@ -6,7 +6,7 @@ def default_astra_config():
         ("option2", ["op2", "option2", "option 2"]),
         ("equ_file", ["showdata", "equ file", "equ file name"])
     ])
-    return ('Astra config', cfg)
+    return {'Astra config': cfg}
 
 def default_sbr_config():
     cfg = dict([
@@ -16,16 +16,31 @@ def default_sbr_config():
         ("sbr4", ["", "subrutine 4"]),
         ("sbr5", ["", "subrutine 5"])
     ])
-    return ('Subrutine config', cfg)
+    return {'Subrutine config': cfg}
 
 def default_config():
-    astra_cfg = default_astra_config()
-    sbr_cfg = default_sbr_config()
-    return dict([astra_cfg, sbr_cfg])    
+    cfg = {
+        'Astra config':{
+            "astra_path": ["\home\Astra", "Astra folder", "Path to astra user folder"],
+            "exp_file": ["readme", "exp file", "exp file name"],
+            "equ_file": ["showdata", "equ file", "equ file name"],
+            "copy_sbr": [False, "Copy sbr", "Auto copy subroutine"]
+        },
+        'Subrutine config': {
+            "sbr1": ["", "subrutine 1"],
+            "sbr2": ["", "subrutine 2"],
+            "sbr3": ["", "subrutine 3"],
+            "sbr4": ["", "subrutine 4"],
+            "sbr5": ["", "subrutine 5"]
+        }
+    }
+    return cfg
 
 import os
 import ipywidgets as widgets
 from IPython.display import display
+from ipywidgets.widgets.widget_button import ButtonStyle
+from ipywidgets.widgets.widget_layout import Layout
 
 output = []
 config = []
@@ -48,10 +63,10 @@ def reset_config(b):
 
 
 def copy_config():
-    for items, (_, cfg) in zip(all_items, config.items()):
-        for w, (_,v) in zip(items, cfg.items()):
-            if (w.value != v[0]):
-                w.value = v[0]
+    widget_list[0].value = config['Astra config']['astra_path'][0]
+    widget_list[1].value = config['Astra config']['exp_file'][0]
+    widget_list[2].value = config['Astra config']['equ_file'][0]
+        
 
 def load_config():
     global config
@@ -69,31 +84,22 @@ def load_config_click(b):
         print('load_config')
 
 def save_config():
+    config['Astra config']['astra_path'][0] = widget_list[0].value 
+    config['Astra config']['exp_file'][0] = widget_list[1].value 
+    config['Astra config']['equ_file'][0] = widget_list[2].value 
     fp = os.path.abspath(config_file)
     with open( fp , "w" ) as write:
         json.dump( config , write, indent = 2 )
 
-def save_changes(b):
+def save__config_click(b):
     output.clear_output()
-    no_changes = True
-    # можно сделать лучше - по ключам проходится
-    for items, (_, cfg) in zip(all_items, config.items()):
-        for w, (_,v) in zip(items, cfg.items()):
-            if (w.value != v[0]):
-                no_changes = False
-                v[0] = w.value
-                with output:
-                    print(w.value, v)
-    if no_changes:
-        with output:
-            print("no changes")
-    else:                
-        save_config()
-        with output:
-            print("save config")
+    save_config()
+    with output:
+        print("Save config")
 
 import shutil   
 def prepare_astra(b):
+    save_config()
     astra_home = config['Astra config']['astra_path'][0]
     exp_file = config['Astra config']['exp_file'][0]
     exp_path = astra_home + '/exp/' + exp_file
@@ -107,21 +113,56 @@ def prepare_astra(b):
             print(" copy " + equ_file + ' to ' + equ_path)
             print(" Please run astra by command: ./a4/.exe/astra " + exp_file + ' ' + equ_file)
 
-
+widget_list = []            
 def widget():
-    global all_items
+    global widget_list
     global output
     output = widgets.Output()
-    tab_children = []
-    all_items = []
-    for _, cfg in config.items():
-        items = [widgets.Text(value=v[0], sync=True, description=v[1], disabled=False) for key, v in cfg.items() ]
-        all_items.append(items)
-        tab_children.append(widgets.GridBox(items, layout=widgets.Layout(grid_template_columns="repeat(2, 400px)")))
-    tab = widgets.Tab()
-    tab.children = tab_children
-    for id, p in enumerate(config.items()):
-        tab.set_title(id, p[0])
+
+    cfg = config['Astra config']
+    widget_list.append(widgets.Text(
+                                    value=cfg['astra_path'][0], 
+                                    sync=True,
+                                    description=cfg['astra_path'][1], 
+                                    disabled=False, 
+                                    layout=widgets.Layout(width='600px')))
+    widget_list.append( widgets.Text(value=cfg['exp_file'][0], sync=True, description=cfg['exp_file'][1], disabled=False))
+    widget_list.append( widgets.Text(value=cfg['equ_file'][0], sync=True, description=cfg['equ_file'][1], disabled=False))
+    widget_list.append( widgets.Checkbox(value=cfg['copy_sbr'][0], description=cfg['copy_sbr'][1], disabled=False))
+
+    path = os.path.abspath('')
+    filenames = next(os.walk(path), (None, None, []))[2]
+    exp_list = [f for f in filenames if f.endswith('exp') ]
+    equ_list = [f for f in filenames if f.endswith('equ') ]
+
+    def on_value_change(change):
+        widget_list[1].value = change['new']
+    def on_value_change2(change):
+        widget_list[2].value = change['new']   
+
+    w_exp = widgets.Select(
+        options=exp_list,
+        #value='',
+        description='exp:',
+        disabled=False
+        )
+    w_exp.observe(on_value_change, names='value')
+
+    w_equ = widgets.Select(
+        options=equ_list,
+        #value='',
+        description='equ:',
+        disabled=False
+        )    
+    w_equ.observe(on_value_change2, names='value')        
+
+    filenames = next(os.walk(os.path.abspath('sbr/')), (None, None, []))[2]
+    w_sbr = widgets.Select(
+        options=filenames,
+        #value='',
+        description='sbr:',
+        disabled=False
+    )   
 
     save_btn = widgets.Button(
         description='Save config',
@@ -150,16 +191,21 @@ def widget():
         disabled=False,
         button_style='', # 'success', 'info', 'warning', 'danger' or ''
         tooltip='Prepare to run astra',
-        icon='check' # (FontAwesome names without the `fa-` prefix)
+        icon='check', # (FontAwesome names without the `fa-` prefix)
     )    
-
-    save_btn.on_click(save_changes)
+    prepare_btn.button_style = 'danger'
+    save_btn.on_click(save__config_click)
     load_btn.on_click(load_config_click)
     reset_btn.on_click(reset_config)
     prepare_btn.on_click(prepare_astra)
     
     btn_box = widgets.HBox([load_btn, save_btn, reset_btn, prepare_btn])
-    return widgets.VBox([widgets.Label('Astra configuration'), tab, btn_box, output])
+
+    hb1 = widgets.HBox(widget_list[1:4])
+    hb2 = widgets.HBox([w_exp,w_equ, w_sbr])
+    header = widgets.Label('Astra configuration', layout = {'width': '100%'} )
+    return widgets.VBox([header, widget_list[0], hb1, hb2, btn_box, output])
+
 
 def summary():
     init_config()
