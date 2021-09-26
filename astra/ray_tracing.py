@@ -296,6 +296,8 @@ def widget():
         tooltip='Prepare to run',
         icon='check' # (FontAwesome names without the `fa-` prefix)
     )   
+    prepare_btn.button_style = 'danger'
+    
     pick_up_btn = widgets.Button(
         description='Pick up results',
         disabled=False,
