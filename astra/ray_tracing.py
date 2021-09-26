@@ -69,7 +69,7 @@ def default_grill_parameters():
         'ntet': [21,'int', 'theta grid number'],
         'nnz': [51,'int','iN_phi grid number']
     }
-    return ('grill parameters and input LH spectrum', p)      
+    return ('grill parameters', p)      
 
 def default_parameters():
     pp = default_pp()
@@ -77,16 +77,17 @@ def default_parameters():
     nm = default_numerical()
     op = default_option()
     gl = default_grill_parameters()
-    return dict([pp, ap, nm, op, gl])
+    sp = ('LH spectrum', []) 
+    return dict([pp, ap, nm, op, gl, sp])
+
 
 import os
-from typing import DefaultDict
-from IPython.core.display import JSON
+import shutil
 import ipywidgets as widgets
 from IPython.display import display
 import json
-from ipywidgets.widgets.widget_description import DescriptionStyle
 import matplotlib.pyplot as plt
+import astra
 
 all_items = []
 parameters = []
@@ -127,7 +128,7 @@ def prepare_dat_file():
         return '  ' + vs + ' '*(9-len(vs)) + "  ! " + name + ' '*(15-len(name)) + v[1] + '\n'
 
     for section_name, items in parameters.items():
-        if section_name == "Spectrum":
+        if section_name == "LH spectrum":
             with output:
                 print(section_name)      
             lines += prepare_spectrum()
@@ -156,24 +157,28 @@ def load_parameters():
             parameters = json.load(json_file)   
 
 def save_parameters():
+    for items, (name, par) in zip(all_items, parameters.items()):
+        if name != 'LH spectrum':
+            for w, (p, v) in zip(items, par.items()):
+                if (w.value != v[0]):
+                    v[0] = w.value
+                    with output:
+                        print(p, w.value)
+
     fp = os.path.abspath(parameters_file)
     with open( fp , "w" ) as write:
         json.dump( parameters , write, indent = 2 )
 
 def update_widget_items():
-    no_changes = True    
-    for items, (_, par) in zip(all_items, parameters.items()):
-        for w, (p, v) in zip(items, par.items()):
-            if (w.value != v[0]):
-                no_changes = False
-                v[0] = w.value
-                with output:
-                    print(p, w.value)
-    return no_changes
+    for items, (name, par) in zip(all_items, parameters.items()):
+        if name != 'LH spectrum':
+            for w, (p, v) in zip(items, par.items()):
+                if (w.value != v[0]):
+                    w.value = v[0]
+                    with output:
+                        print(p, w.value)
+    
 
-import os
-import shutil
-import astra
 
 def remove_folder_contents(path):
     shutil.rmtree(path, ignore_errors=True)
@@ -225,40 +230,41 @@ def widget():
     all_items = []
     output = widgets.Output()
     for name, par in parameters.items():
-        if name == 'Spectrum':
-            out = widgets.Output(layout= {'border': '1px solid blue', 'height': '300px', 'width': '100%'})
+        if name == 'LH spectrum':
+            out = widgets.Output() #layout= {'border': '1px solid blue', 'height': '300px', 'width': '100%'})
             with out:
-                fig, ax = plt.subplots(constrained_layout=True, figsize=(5, 2.5))
+                fig, ax = plt.subplots(constrained_layout=True, figsize=(6, 3))
                 ax.plot(par['Ntor'], par['Amp'])                
-            tab_children.append(widgets.Box([out]))    
+            tab_children.append(out)    
         else:
             items = [ NumberTextWidget(key, v) for key, v in par.items() ]
             all_items.append(items)
             tab_children.append(widgets.GridBox(items, layout=widgets.Layout(grid_template_columns="repeat(3, 300px)")))    
 
     def prepare_click(b):
+        save_parameters()
         prepare_rt_dat()
         prepare_astra()
         with output:
                 print("prepare config for run rt")
 
     def reset_click(b):
+        global parameters
+        parameters = default_parameters()        
+        update_widget_items()
         with output:
                 print("reset ")
 
     def load_click(b):
+        load_parameters()
+        update_widget_items()
         with output:
                 print("load ")
 
     def save_click(b):
-        no_changes = update_widget_items()
-        if no_changes:
-            with output:
-                print("no changes")
-        else:
-            save_parameters()
-            with output:
-                print("save parameters")
+        save_parameters()
+        with output:
+            print("save parameters")
 
     tab = widgets.Tab()
     tab.children = tab_children
