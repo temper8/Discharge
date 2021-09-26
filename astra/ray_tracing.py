@@ -32,7 +32,7 @@ def default_numerical():
         "cleft":  [0.7, 'float', "left Vz plato border shift (<1)"],
         "cright": [1.5, 'float', "right Vz plato border shift (>1)"],
         "cdel":   [0.25, 'float', "(left part)/(Vz plato size)"],
-        "rbord":  [ 0.999, 'float', "relative radius of reflection, <1."],
+        "rbord":  [0.999, 'float', "relative radius of reflection, <1."],
         "pchm":   [0.2, 'float', "threshold between 'strong' and weak' absorption, <1."],
         "pabs":   [1.e-2, 'float', "part of remaining power interp. as absorption"],
         "pgiter": [1.e-4, 'float', "relative accuracy to stop iterations"],
@@ -292,16 +292,15 @@ def widget():
     prepare_btn = widgets.Button(
         description='Prepare to run',
         disabled=False,
-        button_style='', # 'success', 'info', 'warning', 'danger' or ''
+        button_style='danger', # 'success', 'info', 'warning', 'danger' or ''
         tooltip='Prepare to run',
         icon='check' # (FontAwesome names without the `fa-` prefix)
     )   
-    prepare_btn.button_style = 'danger'
-    
+       
     pick_up_btn = widgets.Button(
         description='Pick up results',
         disabled=False,
-        button_style='', # 'success', 'info', 'warning', 'danger' or ''
+        button_style='warning', # 'success', 'info', 'warning', 'danger' or ''
         tooltip='Pick up results',
         icon='check' # (FontAwesome names without the `fa-` prefix)
     )   
@@ -368,17 +367,18 @@ def read_trajectories(f):
     return rays, N_traj
 
 def plot(f):
-    rays, max_N_traj = read_trajectories(f)
-    print("Number of traj "+ str(len(rays)) + "   Max N_traj "+ str(max_N_traj))
-    plt.figure(figsize=(6,6))
-
-    R, Z = read_bounds("out/lcms.dat")
-    plt.plot(R, Z)
-
-    for ray in rays:
-        plt.plot(ray['R'], ray['Z'], alpha=0.5, linewidth=1)
- 
-    plt.show()
+    fp = os.path.abspath(f)
+    if os.path.exists(fp):
+        rays, max_N_traj = read_trajectories(f)
+        print("Number of traj "+ str(len(rays)) + "   Max N_traj "+ str(max_N_traj))
+        plt.figure(figsize=(6,6))
+        R, Z = read_bounds("out/lcms.dat")
+        plt.plot(R, Z)
+        for ray in rays:
+            plt.plot(ray['R'], ray['Z'], alpha=0.5, linewidth=1)
+        plt.show()
+    else:
+        print( 'file {0} not exits'.format(f))
 
 def summary4():
     print(" ====================  Ray tracing summary ====================")
