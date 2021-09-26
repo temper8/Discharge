@@ -118,7 +118,9 @@ def prepare_astra(b):
                 for sbr in sbr_list:
                     sbr_file = 'sbr/'+ sbr
                     srb_dst = astra_home + '/sbr/' + sbr
+                    shutil.copyfile(sbr_file, srb_dst)    
                     print(" copy " + sbr_file + ' to ' + srb_dst)
+
             print(" Please run astra by command: ./a4/.exe/astra " + exp_file + ' ' + equ_file)
 
 widget_list = []            
