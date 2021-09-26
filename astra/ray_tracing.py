@@ -248,6 +248,7 @@ def widget():
             tab_children.append(widgets.GridBox(items, layout=widgets.Layout(grid_template_columns="repeat(3, 300px)")))    
 
     def prepare_click(b):
+        output.clear_output()
         save_parameters()
         prepare_rt_dat()
         prepare_astra()
@@ -256,12 +257,14 @@ def widget():
 
     def reset_click(b):
         global parameters
+        output.clear_output()
         parameters = default_parameters()        
         update_widget_items()
         with output:
                 print("reset ")
 
     def load_click(b):
+        output.clear_output()
         load_parameters()
         update_widget_items()
         with output:
