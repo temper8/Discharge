@@ -11,13 +11,13 @@
       "exp file name"
     ],
     "equ_file": [
-      "40167_02.equ",
+      "40167_01.equ",
       "equ file",
       "equ file name"
     ],
     "copy_sbr": [
       false,
-      "Copy sbr",
+      "Copy subroutine",
       "Auto copy subroutine"
     ]
   },
