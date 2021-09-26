@@ -1,16 +1,16 @@
 
 import os
-from collections import namedtuple
+
 def read_spectrum(f):
     file_path = os.path.abspath(f)
     file = open(file_path)
 
     header = file.readline().split()
-    print(header)
+    #print(header)
 
     spectrum = { h: [] for h in header }
 
-    print(spectrum)
+    #print(spectrum)
 
     lines = file.readlines()
     table = []
@@ -23,6 +23,6 @@ def read_spectrum(f):
             #print(p, item, index)
             item.append(float(row[index]))
 
-    print(len(table))
+    #print(len(table))
 
     return spectrum  
