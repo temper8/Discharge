@@ -67,7 +67,8 @@ def default_grill_parameters():
         'Zplus': [11,'int', 'upper grill corner in centimeters'],
         'Zminus': [-11,'int', 'lower grill corner in centimeters'],
         'ntet': [21,'int', 'theta grid number'],
-        'nnz': [51,'int','iN_phi grid number']
+        'nnz': [51,'int','iN_phi grid number'],
+        'total power': [1,'%','total power in positive spectrum']
     }
     return ('grill parameters', p)      
 
@@ -95,7 +96,7 @@ output = []
 parameters_file = "ray_tracing_cfg.json"
 
 def divide_spectrum():
-    sp = [x for x in zip(parameters['Spectrum']['Ntor'], parameters['Spectrum']['Amp'])]
+    sp = [x for x in zip(parameters['LH spectrum']['Ntor'], parameters['LH spectrum']['Amp'])]
     sp_pos = [ (s[0], s[1]) for s in sp if s[0]>0]
     sp_neg = [ (-s[0], s[1]) for s in sp if s[0]<0]
     sp_neg = list(reversed(sp_neg))
@@ -107,10 +108,10 @@ def prepare_spectrum():
     out_lines.append("!!positive Nfi; P_LH(a.units); points<1001\n")
     for s in sp_pos:
         out_lines.append(str(s[0]) + "   " + str(s[1])+"\n")
-    with output:    
+    with output:
         print(len(out_lines))
 
-    power = 1.0
+    power = parameters['grill parameters']['total power'][0]
     out_lines.append(str(power) + '	-88888. !0.57 first value=part(%) of total power in positive spectrum.\n')
     out_lines.append('!!negative Nfi; P_LH(a.units); points number<1001, arbitrary spacing.\n')
 
