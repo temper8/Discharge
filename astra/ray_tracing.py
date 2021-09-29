@@ -228,6 +228,8 @@ def NumberTextWidget(des, v):
     else:
         return widgets.FloatText(value=v[0], description='{0} ({1})'.format(des,v[1]), disabled=False,style = style, layout= layout)
 
+import io
+
 def widget():    
     global parameters
     global all_items
@@ -237,12 +239,17 @@ def widget():
     output = widgets.Output()
     for name, par in parameters.items():
         if name == 'LH spectrum':
-            out = widgets.Output() #layout= {'border': '1px solid blue', 'height': '300px', 'width': '100%'})
-            all_items.append(out)
-            with out:
-                fig, ax = plt.subplots(constrained_layout=True, figsize=(6, 3))
-                ax.plot(par['Ntor'], par['Amp'])                
-            tab_children.append(out)    
+            with plt.ioff():
+                fig = plt.figure(figsize=(6, 3))
+                plt.title(name)
+                plt.plot(par['Ntor'], par['Amp'])
+                buffer = io.BytesIO()
+                fig.savefig(buffer, format="png")
+                buffer.seek(0)
+                image = buffer.read()
+                img = widgets.Image(value=image, format='png')
+            all_items.append(img)
+            tab_children.append(img)    
         else:
             items = [ NumberTextWidget(key, v) for key, v in par.items() ]
             all_items.append(items)
