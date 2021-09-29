@@ -179,11 +179,16 @@ def update_widget_items():
                     with output:
                         print(p, w.value)
         else:
-            out = items #layout= {'border': '1px solid blue', 'height': '300px', 'width': '100%'})
-            out.clear_output()
-            with out:
-                fig, ax = plt.subplots(constrained_layout=True, figsize=(6, 3))
-                ax.plot(par['Ntor'], par['Amp'])                
+            img = items #layout= {'border': '1px solid blue', 'height': '300px', 'width': '100%'})
+            with plt.ioff():
+                fig = plt.figure(figsize=(6, 3))
+                plt.title(name)
+                plt.plot(par['Ntor'], par['Amp'])
+                buffer = io.BytesIO()
+                fig.savefig(buffer, format="png")
+                buffer.seek(0)
+                img.value = buffer.read()
+                #img = widgets.Image(value=image, format='png')
             #tab_children.append(out)   
 
 def remove_folder_contents(path):
