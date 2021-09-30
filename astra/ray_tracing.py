@@ -195,14 +195,37 @@ def remove_folder_contents(path):
     shutil.rmtree(path, ignore_errors=True)
     os.makedirs(path)
 
+from zipfile import ZipFile
+
+def pack_race_to_ZipFile():
+    from zipfile import ZipFile
+    import zipfile
+    import astra
+    from datetime import datetime
+    dt_string = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
+    print("date and time =", dt_string)
+
+    #astra.init_config()
+    astra_home = astra.config['Astra config']['astra_path'][0]
+    src = astra_home + '/lhcd/out' 
+    dst = '/lhcd/out/'
+    with output:
+            print( ' pack folder: ' + dst)
+    filenames = next(os.walk(src), (None, None, []))[2]
+    with ZipFile('races/race_{0}.zip'.format(dt_string), 'w', compression=zipfile.ZIP_BZIP2, compresslevel = 9) as zip:
+        # writing each file one by one
+        for file in filenames:
+            zip.write(src + "/" + file, dst + file)      
+
 def pick_up_results(b):
     astra_home = astra.config['Astra config']['astra_path'][0]
     src = astra_home + '/lhcd/out' 
     dst = 'out/'
     filenames = next(os.walk(src), (None, None, []))[2]
-    remove_folder_contents(dst)
-    for f in filenames:
-        shutil.copyfile(src + "/"+ f, dst + f)
+    #remove_folder_contents(dst)
+    #for f in filenames:
+    #    shutil.copyfile(src + "/"+ f, dst + f)
+    pack_race_to_ZipFile()
     with output:
             print( ' src folder:')
             print( ' '+ src)
