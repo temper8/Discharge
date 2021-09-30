@@ -104,16 +104,18 @@ def prepare_astra(b):
     save_config()
     astra_home = config['Astra config']['astra_path'][0]
     exp_file = config['Astra config']['exp_file'][0]
-    exp_path = astra_home + '/exp/' + exp_file
-    equ_file = config['Astra config']['equ_file'][0]
-    equ_path = astra_home + '/equ/' + equ_file
+    exp_src = 'exp_equ/' + exp_file
+    exp_dst = astra_home + '/exp/' + exp_file
+    equ_file = config['Astra config']['equ_file'][0] 
+    equ_src = 'exp_equ/' + equ_file
+    equ_dst = astra_home + '/equ/' + equ_file
     sbr_list = next(os.walk(os.path.abspath('sbr/')), (None, None, []))[2]
     with output:
             print("Astra home " + astra_home)    
-            shutil.copyfile(exp_file, exp_path)
-            shutil.copyfile(equ_file, equ_path)    
-            print(" copy " + exp_file + ' to ' + exp_path)
-            print(" copy " + equ_file + ' to ' + equ_path)
+            shutil.copyfile(exp_src, exp_dst)
+            shutil.copyfile(equ_src, equ_dst)    
+            print(" copy " + exp_src + ' to ' + equ_dst)
+            print(" copy " + equ_src + ' to ' + equ_dst)
             if config['Astra config']['copy_sbr'][0]:
                 for sbr in sbr_list:
                     sbr_file = 'sbr/'+ sbr
@@ -140,7 +142,7 @@ def widget():
     widget_list.append( widgets.Text(value=cfg['equ_file'][0], sync=True, description=cfg['equ_file'][1], disabled=False))
     widget_list.append( widgets.Checkbox(value=cfg['copy_sbr'][0], description=cfg['copy_sbr'][1], disabled=False))
 
-    path = os.path.abspath('')
+    path = os.path.abspath('exp_equ/')
     filenames = next(os.walk(path), (None, None, []))[2]
     exp_list = [f for f in filenames if f.endswith('exp') ]
     equ_list = [f for f in filenames if f.endswith('equ') ]
