@@ -223,12 +223,15 @@ def prepare_astra():
     dat_file = 'rt_cfg.dat'
     dat_path = astra_home + '/lhcd/' + dat_file
     out_folder = astra_home + '/lhcd/out' 
+    dat_folder = astra_home + '/dat' 
     with output:
             print(" Astra home " + astra_home)    
             shutil.copyfile(dat_file, dat_path)
             print(" Copy " + dat_file + ' to ' + dat_path)
             remove_folder_contents(out_folder)
             print(' Clear folder: ' + out_folder)
+            remove_folder_contents(dat_folder)
+            print(' Clear folder: ' + dat_folder)            
             print(" Please run astra by command: ./a4/.exe/astra " + exp_file + ' ' + equ_file)
 
 style = {'description_width': '100px', "data-toggle": "tooltip"}
