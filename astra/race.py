@@ -4,6 +4,8 @@ from zipfile import ZipFile
 
 import matplotlib.pyplot as plt
 
+import radial_data
+
 def get_traj_list(f):
     tmp = 'lhcd/out/traj.'
     with ZipFile('races/'+ f) as zip:
@@ -17,15 +19,25 @@ def float_try(str):
 
 
 class Race:
-    file = ""
+    zip_file = ""
     astra_config = []
     rt_config = []
     traj_list = []
+    radial_data_list = []
     def __init__(self, f):
-        self.file = f
+        self.zip_file = f
         self.astra_config =  astra_zip.get_astra_config(f)
         self.traj_list = get_traj_list(f)
+        self.radial_data_list = self.get_radial_data_list()
         print('init')
+
+    def get_radial_data_list(self):
+        exp_file = self.astra_config['Astra config']['exp_file'][0]
+        equ_file = self.astra_config['Astra config']['equ_file'][0]
+        tmp = 'dat/{0}.{1}'.format(exp_file,equ_file)
+        print(tmp)
+        with ZipFile('races/'+ self.zip_file) as zip:
+            return [ z.filename for z in zip.filelist if (z.filename.startswith(tmp))]
 
     def print_summary(self):
         print(" ======  ASTRA summary =====")
@@ -37,8 +49,13 @@ class Race:
         print('{0:12}  {1}'.format(exp_file[1], exp_file[0]))
         print('{0:12}  {1}'.format(equ_file[1], equ_file[0]))
 
+    def read_radial_data(self,f):
+        with ZipFile('races/'+ self.zip_file) as zip:
+            with zip.open(f) as file:
+                return radial_data.read_radial_data(file)
+
     def read_trajectories(self, f):
-        with ZipFile('races/'+ self.file) as zip:
+        with ZipFile('races/'+ self.zip_file) as zip:
             with zip.open(f) as file:
                 header = file.readline().decode("utf-8").replace('=', '_').split()
 
