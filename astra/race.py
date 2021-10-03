@@ -29,12 +29,13 @@ class Race:
         self.astra_config =  astra_zip.get_astra_config(f)
         self.traj_list = get_traj_list(f)
         self.radial_data_list = self.get_radial_data_list()
+        self.radial_data_list.sort(key=len)
         print('init')
 
     def get_radial_data_list(self):
         exp_file = self.astra_config['Astra config']['exp_file'][0]
         equ_file = self.astra_config['Astra config']['equ_file'][0]
-        tmp = 'dat/{0}.{1}'.format(exp_file,equ_file)
+        tmp = 'dat/{0}.{1}.'.format(exp_file,equ_file)
         print(tmp)
         with ZipFile('races/'+ self.zip_file) as zip:
             return [ z.filename for z in zip.filelist if (z.filename.startswith(tmp))]
