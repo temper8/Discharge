@@ -69,3 +69,17 @@ class Race:
             plt.plot(ray['R'], ray['Z'], alpha=0.5, linewidth=1)
         plt.show()
 
+    def few_plot_trajectories(self, list_of_num):
+        #plt.figure(figsize=(6,6))
+        fig, axs = plt.subplots(1, len(list_of_num))
+        for index,t in enumerate(list_of_num):
+            f = self.traj_list[t]
+            rays, max_N_traj = self.read_trajectories(f)
+            print("Number of traj "+ str(len(rays)) + "   Max N_traj "+ str(max_N_traj))
+            print(f)
+        
+            #R, Z = read_bounds("out/lcms.dat")
+            #plt.plot(R, Z)
+            for ray in rays:
+                axs[index].plot(ray['R'], ray['Z'], alpha=0.5, linewidth=1)
+            #axs[index].show()
