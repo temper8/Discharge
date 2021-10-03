@@ -21,9 +21,15 @@ def pack_all():
     astra.init_config()
     astra_home = astra.config['Astra config']['astra_path'][0]
     src = astra_home + '/lhcd/out' 
-    dst = '/lhcd/out/'
+    dst = '/lhcd/out'
     pack_folder_to_ZipFile(src,dst)
     print( ' pack folder: ' + dst)
+    src = astra_home + '/dat' 
+    dst = '/dat'
+    pack_folder_to_ZipFile(src,dst)
+    print( ' pack folder: ' + dst)
+
+
 
 def pack_config():
     with ZipFile('races/'+ my_zip_file, 'w', compression=zipfile.ZIP_BZIP2, compresslevel = 9) as zip:
@@ -36,7 +42,7 @@ def pack_folder_to_ZipFile(src, dst):
     with ZipFile('races/'+ my_zip_file, 'a', compression=zipfile.ZIP_BZIP2, compresslevel = 9) as zip:
         # writing each file one by one
         for file in filenames:
-            zip.write(src + "/" + file, dst + file)    
+            zip.write(src + "/" + file, dst + "/" + file)    
 
 import json
 
