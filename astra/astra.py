@@ -101,6 +101,7 @@ def save__config_click(b):
 
 import shutil   
 def prepare_astra(b):
+    output.clear_output()    
     save_config()
     astra_home = config['Astra config']['astra_path'][0]
     exp_file = config['Astra config']['exp_file'][0]
