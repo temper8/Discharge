@@ -82,6 +82,7 @@ class Race:
         #print(f)
         plt.figure(figsize=(6,6))
         plt.title(f)
+        plt.axis('equal')
         #R, Z = read_bounds("out/lcms.dat")
         #plt.plot(R, Z)
         for ray in rays:
@@ -90,7 +91,7 @@ class Race:
 
     def few_plot_trajectories(self, list_of_num):
         #plt.figure(figsize=(6,6))
-        fig, axs = plt.subplots(1, len(list_of_num))
+        fig, axs = plt.subplots(1, len(list_of_num), figsize=(10, 5))
         for index,t in enumerate(list_of_num):
             f = self.traj_list[t]
             rays, max_N_traj = self.read_trajectories(f)
