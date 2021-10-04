@@ -78,9 +78,10 @@ class Race:
 
     def plot_trajectories(self, f):
         rays, max_N_traj = self.read_trajectories(f)
-        print("Number of traj "+ str(len(rays)) + "   Max N_traj "+ str(max_N_traj))
-        print(f)
+        #print("Number of traj "+ str(len(rays)) + "   Max N_traj "+ str(max_N_traj))
+        #print(f)
         plt.figure(figsize=(6,6))
+        plt.title(f)
         #R, Z = read_bounds("out/lcms.dat")
         #plt.plot(R, Z)
         for ray in rays:
