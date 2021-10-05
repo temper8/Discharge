@@ -89,6 +89,13 @@ class Race:
             plt.plot(ray['R'], ray['Z'], alpha=0.5, linewidth=1)
         plt.show()
 
+    def plot(self, axis, num):
+        f = self.traj_list[num]
+        rays, max_N_traj = self.read_trajectories(f)
+        #axis.axis('equal')
+        for ray in rays:
+                axis.plot(ray['R'], ray['Z'], alpha=0.5, linewidth=1)
+
     def few_plot_trajectories(self, list_of_num):
         #plt.figure(figsize=(6,6))
         fig, axs = plt.subplots(1, len(list_of_num), figsize=(10, 5))
