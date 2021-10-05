@@ -16,6 +16,7 @@ w_text = []
 w_home = []
 w_comp = []
 w_race = []
+w_copy_sbr = []
 
 import astra_zip
 
@@ -35,6 +36,7 @@ def update_widget():
     astra.init_config()
     w_exp.value = astra.config['Astra config']['exp_file'][0]
     w_equ.value = astra.config['Astra config']['equ_file'][0]
+    w_copy_sbr.value = astra.config['Astra config']['copy_sbr'][0]
     w_home.value = astra.config['Astra config']['astra_path'][0]
     w_comp.value = astra.config['Astra config']['comp_name'][0]    
     w_race.value = generate_race_name(astra.config['Astra config']['comp_name'][0])
@@ -53,6 +55,8 @@ def widget():
     global w_home
     global w_comp   
     global w_race
+    global w_copy_sbr
+
 
     output = widgets.Output()
 
@@ -61,6 +65,7 @@ def widget():
 
     w_exp = widgets.Text(value='exp_file', sync=True, description='exp file', disabled=True)
     w_equ = widgets.Text(value='equ_file', sync=True, description='equ file', disabled=True)
+    w_copy_sbr =  widgets.Checkbox(value=False, description='copy sbr', disabled=True)
     w_home = widgets.Text(value='astra path', sync=True, description='Astra:', disabled=True, 
                                     layout=widgets.Layout(width='400px'))
     w_comp = widgets.Text(value='noname', sync=True, description='comp name', disabled=True, layout=widgets.Layout(width='200px'))
@@ -98,7 +103,7 @@ def widget():
     update_widget()
 
     v_box = widgets.HBox([wv1,  wv2])
-    v_box2 = widgets.HBox([w_exp,  w_equ])
+    v_box2 = widgets.HBox([w_exp,  w_equ, w_copy_sbr])
     v_box3 = widgets.HBox([w_home,  w_comp])
     btn_box = widgets.HBox([update_btn,  prepare_btn, pick_up_btn])
     title = widgets.Label('Astra run configuration')
