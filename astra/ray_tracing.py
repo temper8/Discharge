@@ -191,30 +191,8 @@ def update_widget_items():
                 #img = widgets.Image(value=image, format='png')
             #tab_children.append(out)   
 
-def remove_folder_contents(path):
-    files = next(os.walk(path), (None, None, []))[2]
-    for f in files:
-        os.remove(os.path.join(path, f))
 
 
-
-def prepare_astra():
-    astra_home = astra.config['Astra config']['astra_path'][0]
-    exp_file = astra.config['Astra config']['exp_file'][0]
-    equ_file = astra.config['Astra config']['equ_file'][0]
-    dat_file = 'rt_cfg.dat'
-    dat_path = astra_home + '/lhcd/' + dat_file
-    out_folder = astra_home + '/lhcd/out' 
-    dat_folder = astra_home + '/dat' 
-    with output:
-            print(" Astra home " + astra_home)    
-            shutil.copyfile(dat_file, dat_path)
-            print(" Copy " + dat_file + ' to ' + dat_path)
-            remove_folder_contents(out_folder)
-            print(' Clear folder: ' + out_folder)
-            remove_folder_contents(dat_folder)
-            print(' Clear folder: ' + dat_folder)            
-            print(" Please run astra by command: ./a4/.exe/astra " + exp_file + ' ' + equ_file)
 
 style = {'description_width': '100px', "data-toggle": "tooltip"}
 layout = {'width': '300px'}
@@ -252,13 +230,7 @@ def widget():
             all_items.append(items)
             tab_children.append(widgets.GridBox(items, layout=widgets.Layout(grid_template_columns="repeat(3, 300px)")))    
 
-    def prepare_click(b):
-        output.clear_output()
-        save_parameters()
-        prepare_rt_dat()
-        prepare_astra()
-        with output:
-                print("prepare config for run rt")
+
 
     def reset_click(b):
         global parameters
@@ -308,21 +280,12 @@ def widget():
         tooltip='Save parameters',
         icon='check' # (FontAwesome names without the `fa-` prefix)
     )
-
-    prepare_btn = widgets.Button(
-        description='Prepare to run',
-        disabled=False,
-        button_style='danger', # 'success', 'info', 'warning', 'danger' or ''
-        tooltip='Prepare to run',
-        icon='check' # (FontAwesome names without the `fa-` prefix)
-    )   
        
     save_btn.on_click(save_click)
     load_btn.on_click(load_click)
     reset_btn.on_click(reset_click)
-    prepare_btn.on_click(prepare_click)
-    
-    btn_box = widgets.HBox([load_btn, save_btn, reset_btn, prepare_btn])
+
+    btn_box = widgets.HBox([load_btn, save_btn, reset_btn])
     title = widgets.Label('Ray-tracing configuration')
     return widgets.VBox([title, tab, btn_box, output])         
     #return widgets.VBox([title, tab, btn_box, output], layout= { 'height': '400px'})
