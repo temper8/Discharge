@@ -63,6 +63,7 @@ CCD3=VINT(CAR12B);  !absorbed power via collisional damping
 !QLH=ZRD45X;
 CF1=0.1d-3;  !interval between lhcd() calls, sec
 CF2=0.180d0;  !first call of lhcd()
+debug:0.001:TSTART::;
 saveprofiles::CF2::;
 lhcd2017(PELH):CF1:CF2::;
 drivencurrent(CULH,CAR32)::CF2::;
