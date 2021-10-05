@@ -14,8 +14,22 @@ selected_races = []
 widget_races = []
 header = []
 
-def info():
-    print(selected_races)
+def print_info():
+    #print(selected_races)
+    w = 50 
+    races = [Race(r) for r in selected_races]
+    summary = [ r.summary() for r in races]
+    s = ''
+    for f in selected_races:
+        x = (w-len(f))//2
+        s = s + ' '*x + f + ' '*x
+    print(s)
+    for k,_ in enumerate(summary[0]):
+        s = ''
+        for j,_ in enumerate(summary):
+            s = s + summary[j][k] + ' '*(w-len(summary[j][k]))
+        print(s)    
+
 
 def widget():
     global selected_races
