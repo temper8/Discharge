@@ -30,25 +30,38 @@ class Race:
         self.traj_list = get_traj_list(f)
         self.radial_data_list = self.get_radial_data_list()
         self.radial_data_list.sort(key=len)
-        print('init')
+        #print('init')
 
     def get_radial_data_list(self):
         exp_file = self.astra_config['Astra config']['exp_file'][0]
         equ_file = self.astra_config['Astra config']['equ_file'][0]
         tmp = 'dat/{0}.{1}.'.format(exp_file,equ_file)
-        print(tmp)
+        #print(tmp)
         with ZipFile('races/'+ self.zip_file) as zip:
             return [ z.filename for z in zip.filelist if (z.filename.startswith(tmp))]
 
-    def print_summary(self):
-        print(" ======  ASTRA summary =====")
+    def summary(self):
+        lines = []
+        title = 'ASTRA summary'
+        x = (48 - len(title))//2
+        lines.append(" {0} {1} {2}".format('='*x, title, '='*x))
         astra_home = self.astra_config['Astra config']['astra_path']
         exp_file = self.astra_config['Astra config']['exp_file']
         equ_file = self.astra_config['Astra config']['equ_file']
+        comp_name = self.astra_config['Astra config']['comp_name']
+        lines.append(' {0:12}  {1}'.format(astra_home[1], astra_home[0]))
+        lines.append(' {0:12}  {1}'.format(exp_file[1], exp_file[0]))
+        lines.append(' {0:12}  {1}'.format(equ_file[1], equ_file[0]))
+        lines.append(' {0:12}  {1}'.format(comp_name[1], comp_name[0]))        
+        return lines
+
+    def print_summary(self):
+        lines = self.summary()
+        for l in lines:
+            print(l)
+
     
-        print('{0:12}  {1}'.format(astra_home[1], astra_home[0]))
-        print('{0:12}  {1}'.format(exp_file[1], exp_file[0]))
-        print('{0:12}  {1}'.format(equ_file[1], equ_file[0]))
+
 
     def read_radial_data(self,f):
         with ZipFile('races/'+ self.zip_file) as zip:
