@@ -10,13 +10,9 @@ def set_zip_file(f):
     global my_zip_file
     my_zip_file = f
 
-def new_zip_file():
+def pack_all(file_name):
     global my_zip_file
-    dt_string = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
-    my_zip_file = 'race_{0}.zip'.format(dt_string)
-
-def pack_all():
-    new_zip_file()
+    my_zip_file = file_name
     pack_config()
     astra.init_config()
     astra_home = astra.config['Astra config']['astra_path'][0]

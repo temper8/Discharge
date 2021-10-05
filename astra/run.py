@@ -17,6 +17,16 @@ w_home = []
 w_comp = []
 w_race = []
 
+import astra_zip
+
+   
+
+def pick_up_results(b):
+    with output:
+        print(w_race.value)
+        astra_zip.pack_all(w_race.value)
+
+
 def generate_race_name(prefix):
     dt_string = datetime.datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
     return '{0}_{1}.zip'.format(prefix, dt_string)
@@ -84,7 +94,7 @@ def widget():
 
     update_btn.on_click(update_btn_click)
     #prepare_btn.on_click(prepare_click)
-    #pick_up_btn.on_click(pick_up_results)
+    pick_up_btn.on_click(pick_up_results)
     update_widget()
 
     v_box = widgets.HBox([wv1,  wv2])
