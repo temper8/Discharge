@@ -1,27 +1,14 @@
-def default_astra_config():
-    cfg = dict([
-        ("astra_path", ["\home\Astra", "Astra folder", "Path to astra user folder"]),
-        ("option1", ["op1", "option1", "option 1"]),
-        ("exp_file", ["readme", "exp file", "exp file name"]),
-        ("option2", ["op2", "option2", "option 2"]),
-        ("equ_file", ["showdata", "equ file", "equ file name"])
-    ])
-    return {'Astra config': cfg}
-
-def default_sbr_config():
-    cfg = dict([
-        ("sbr1", ["", "subrutine 1"]),
-        ("sbr2", ["", "subrutine 2"]),
-        ("sbr3", ["", "subrutine 3"]),
-        ("sbr4", ["", "subrutine 4"]),
-        ("sbr5", ["", "subrutine 5"])
-    ])
-    return {'Subrutine config': cfg}
+import os
+import ipywidgets as widgets
+from IPython.display import display
+from ipywidgets.widgets.widget_button import ButtonStyle
+from ipywidgets.widgets.widget_layout import Layout
 
 def default_config():
     cfg = {
         'Astra config':{
             "astra_path": ["\home\Astra", "Astra folder", "Path to astra user folder"],
+            "comp_name": ["noname", "Computer name", "option 1"],
             "exp_file": ["readme", "exp file", "exp file name"],
             "equ_file": ["showdata", "equ file", "equ file name"],
             "copy_sbr": [False, "Copy subroutine", "Auto copy subroutine"]
@@ -36,11 +23,6 @@ def default_config():
     }
     return cfg
 
-import os
-import ipywidgets as widgets
-from IPython.display import display
-from ipywidgets.widgets.widget_button import ButtonStyle
-from ipywidgets.widgets.widget_layout import Layout
 
 output = []
 config = []
@@ -57,16 +39,17 @@ def reset_config(b):
     global config
     output.clear_output()
     config = default_config()    
-    copy_config()
+    update_widgets()
     with output:
         print('reset_config')
 
 
-def copy_config():
+def update_widgets():
     widget_list[0].value = config['Astra config']['astra_path'][0]
-    widget_list[1].value = config['Astra config']['exp_file'][0]
-    widget_list[2].value = config['Astra config']['equ_file'][0]
-    widget_list[3].value = config['Astra config']['copy_sbr'][0]    
+    widget_list[1].value = config['Astra config']['comp_name'][0]    
+    widget_list[2].value = config['Astra config']['exp_file'][0]
+    widget_list[3].value = config['Astra config']['equ_file'][0]
+    widget_list[4].value = config['Astra config']['copy_sbr'][0]    
         
 
 def load_config():
@@ -74,21 +57,23 @@ def load_config():
     fp = os.path.abspath(config_file)
     if os.path.exists(fp):
         with open(fp) as json_file:
-            config = json.load(json_file)
+            cfg = json.load(json_file)
+            config['Astra config'].update(cfg['Astra config'])
 
 def load_config_click(b):
     global config
     output.clear_output()
     load_config()
-    copy_config()   
+    update_widgets()   
     with output:
         print('load_config')
 
 def save_config():
     config['Astra config']['astra_path'][0] = widget_list[0].value 
-    config['Astra config']['exp_file'][0] = widget_list[1].value 
-    config['Astra config']['equ_file'][0] = widget_list[2].value 
-    config['Astra config']['copy_sbr'][0] = widget_list[3].value 
+    config['Astra config']['comp_name'][0] = widget_list[1].value     
+    config['Astra config']['exp_file'][0] = widget_list[2].value 
+    config['Astra config']['equ_file'][0] = widget_list[3].value 
+    config['Astra config']['copy_sbr'][0] = widget_list[4].value 
     fp = os.path.abspath(config_file)
     with open( fp , "w" ) as write:
         json.dump( config , write, indent = 2 )
@@ -139,6 +124,12 @@ def widget():
                                     description=cfg['astra_path'][1], 
                                     disabled=False, 
                                     layout=widgets.Layout(width='600px')))
+    widget_list.append(widgets.Text(
+                                    value=cfg['comp_name'][0], 
+                                    sync=True,
+                                    description=cfg['comp_name'][1], 
+                                    disabled=False, 
+                                    layout=widgets.Layout(width='300px')))                                    
     widget_list.append( widgets.Text(value=cfg['exp_file'][0], sync=True, description=cfg['exp_file'][1], disabled=False))
     widget_list.append( widgets.Text(value=cfg['equ_file'][0], sync=True, description=cfg['equ_file'][1], disabled=False))
     widget_list.append( widgets.Checkbox(value=cfg['copy_sbr'][0], description=cfg['copy_sbr'][1], disabled=False))
@@ -149,9 +140,9 @@ def widget():
     equ_list = [f for f in filenames if f.endswith('equ') ]
 
     def on_value_change(change):
-        widget_list[1].value = change['new']
+        widget_list[2].value = change['new']
     def on_value_change2(change):
-        widget_list[2].value = change['new']   
+        widget_list[3].value = change['new']   
 
     w_exp = widgets.Select(
         options=exp_list,
@@ -213,11 +204,11 @@ def widget():
     prepare_btn.on_click(prepare_astra)
     
     btn_box = widgets.HBox([load_btn, save_btn, reset_btn, prepare_btn])
-
-    hb1 = widgets.HBox(widget_list[1:4])
-    hb2 = widgets.HBox([w_exp,w_equ, w_sbr])
+    hb0 = widgets.HBox(widget_list[0:2])
+    hb1 = widgets.HBox(widget_list[2:5])
+    hb2 = widgets.HBox([w_exp, w_equ, w_sbr])
     header = widgets.Label('Astra configuration', layout = {'width': '100%'} )
-    return widgets.VBox([header, widget_list[0], hb1, hb2, btn_box, output])
+    return widgets.VBox([header, hb0, hb1, hb2, btn_box, output])
 
 
 def summary():
