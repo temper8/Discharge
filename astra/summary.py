@@ -1,4 +1,5 @@
 import os
+from ipython_genutils.py3compat import with_metaclass
 import ipywidgets as widgets
 from IPython.display import display
 from ipywidgets.widgets.widget_button import ButtonStyle
@@ -9,39 +10,38 @@ from race import Race
 output = []
 
 race_file = ''
-
-R1 = []
+selected_races = []
+widget_races = []
+header = []
 
 def info():
-    print(race_file)
-    R1.print_summary()
+    print(selected_races)
 
 def widget():
+    global selected_races
+    global widget_races
+    global header
     global output
-    global R1
     output = widgets.Output()
     filenames = next(os.walk(os.path.abspath('races/')), (None, None, []))[2]
+    filenames = [f for f in filenames if f.endswith('zip') ]
 
     def on_value_change(change):
-        global race_file
-        global R1
-        race_file = change['new']
-        R1 = Race(race_file)
-        output.clear_output()
-        with output:
-            print(race_file)
+        global header
+        global selected_races
+        selected_races = widget_races.value
+        header.value = 'Select race : '  + str(widget_races.value)
 
-
-    w_sbr = widgets.Select(
+    widget_races = widgets.SelectMultiple(
         options=filenames,
         #value='',
         description='Races:',
         disabled=False
     )
-
-    w_sbr.observe(on_value_change, names='value')
+    widget_races.observe(on_value_change, names='value')
 
     #hb1 = widgets.HBox(widget_list[1:4])
-    hb2 = widgets.HBox([ w_sbr])
-    header = widgets.Label('Select race', layout = {'width': '100%'} )
+    hb2 = widgets.HBox([widget_races])
+    header = widgets.Label('Select race :', layout = {'width': '100%'} )
+    
     return widgets.VBox([header, hb2, output])
