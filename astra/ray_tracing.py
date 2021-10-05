@@ -192,29 +192,11 @@ def update_widget_items():
             #tab_children.append(out)   
 
 def remove_folder_contents(path):
-    shutil.rmtree(path, ignore_errors=True)
-    os.makedirs(path)
+    files = next(os.walk(path), (None, None, []))[2]
+    for f in files:
+        os.remove(os.path.join(path, f))
 
-import astra_zip
 
-def pack_race_to_ZipFile():
-    astra_zip.pack_all()
-   
-
-def pick_up_results(b):
-    astra_home = astra.config['Astra config']['astra_path'][0]
-    src = astra_home + '/lhcd/out' 
-    dst = 'out/'
-    filenames = next(os.walk(src), (None, None, []))[2]
-    #remove_folder_contents(dst)
-    #for f in filenames:
-    #    shutil.copyfile(src + "/"+ f, dst + f)
-    pack_race_to_ZipFile()
-    with output:
-            print( ' src folder:')
-            print( ' '+ src)
-            print(' Files:' + str(len(filenames)))    
-            print(" dest " + dst) 
 
 def prepare_astra():
     astra_home = astra.config['Astra config']['astra_path'][0]
@@ -335,21 +317,12 @@ def widget():
         icon='check' # (FontAwesome names without the `fa-` prefix)
     )   
        
-    pick_up_btn = widgets.Button(
-        description='Pick up results',
-        disabled=False,
-        button_style='warning', # 'success', 'info', 'warning', 'danger' or ''
-        tooltip='Pick up results',
-        icon='check' # (FontAwesome names without the `fa-` prefix)
-    )   
-
     save_btn.on_click(save_click)
     load_btn.on_click(load_click)
     reset_btn.on_click(reset_click)
     prepare_btn.on_click(prepare_click)
-    pick_up_btn.on_click(pick_up_results)
     
-    btn_box = widgets.HBox([load_btn, save_btn, reset_btn, prepare_btn, pick_up_btn])
+    btn_box = widgets.HBox([load_btn, save_btn, reset_btn, prepare_btn])
     title = widgets.Label('Ray-tracing configuration')
     return widgets.VBox([title, tab, btn_box, output])         
     #return widgets.VBox([title, tab, btn_box, output], layout= { 'height': '400px'})
