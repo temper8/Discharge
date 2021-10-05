@@ -84,32 +84,6 @@ def save__config_click(b):
     with output:
         print("Save config")
 
-import shutil   
-def prepare_astra(b):
-    output.clear_output()    
-    save_config()
-    astra_home = config['Astra config']['astra_path'][0]
-    exp_file = config['Astra config']['exp_file'][0]
-    exp_src = 'exp_equ/' + exp_file
-    exp_dst = astra_home + '/exp/' + exp_file
-    equ_file = config['Astra config']['equ_file'][0] 
-    equ_src = 'exp_equ/' + equ_file
-    equ_dst = astra_home + '/equ/' + equ_file
-    sbr_list = next(os.walk(os.path.abspath('sbr/')), (None, None, []))[2]
-    with output:
-            print("Astra home " + astra_home)    
-            shutil.copyfile(exp_src, exp_dst)
-            shutil.copyfile(equ_src, equ_dst)    
-            print(" copy " + exp_src + ' to ' + equ_dst)
-            print(" copy " + equ_src + ' to ' + equ_dst)
-            if config['Astra config']['copy_sbr'][0]:
-                for sbr in sbr_list:
-                    sbr_file = 'sbr/'+ sbr
-                    srb_dst = astra_home + '/sbr/' + sbr
-                    shutil.copyfile(sbr_file, srb_dst)    
-                    print(" copy " + sbr_file + ' to ' + srb_dst)
-
-            print(" Please run astra by command: ./a4/.exe/astra " + exp_file + ' ' + equ_file)
 
 widget_list = []            
 def widget():
@@ -190,20 +164,13 @@ def widget():
         tooltip='Reset config',
         icon='check' # (FontAwesome names without the `fa-` prefix)
     )    
-    prepare_btn = widgets.Button(
-        description='Prepare to run astra',
-        disabled=False,
-        button_style='', # 'success', 'info', 'warning', 'danger' or ''
-        tooltip='Prepare to run astra',
-        icon='check', # (FontAwesome names without the `fa-` prefix)
-    )    
-    prepare_btn.button_style = 'danger'
+
     save_btn.on_click(save__config_click)
     load_btn.on_click(load_config_click)
     reset_btn.on_click(reset_config)
-    prepare_btn.on_click(prepare_astra)
+
     
-    btn_box = widgets.HBox([load_btn, save_btn, reset_btn, prepare_btn])
+    btn_box = widgets.HBox([load_btn, save_btn, reset_btn])
     hb0 = widgets.HBox(widget_list[0:2])
     hb1 = widgets.HBox(widget_list[2:5])
     hb2 = widgets.HBox([w_exp, w_equ, w_sbr])
