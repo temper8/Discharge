@@ -108,8 +108,7 @@ def prepare_spectrum():
     out_lines.append("!!positive Nfi; P_LH(a.units); points<1001\n")
     for s in sp_pos:
         out_lines.append(str(s[0]) + "   " + str(s[1])+"\n")
-    with output:
-        print(len(out_lines))
+    #print(len(out_lines))
 
     power = parameters['grill parameters']['total power'][0]
     out_lines.append(str(power) + '	-88888. !0.57 first value=part(%) of total power in positive spectrum.\n')
@@ -117,8 +116,7 @@ def prepare_spectrum():
 
     for s in sp_neg:
         out_lines.append(str(s[0]) + "   " + str(s[1])+"\n")
-    with output:
-        print(len(out_lines))
+    #print(len(out_lines))
     return out_lines
 
 
@@ -130,8 +128,7 @@ def prepare_dat_file():
 
     for section_name, items in parameters.items():
         if section_name == "LH spectrum":
-            with output:
-                print(section_name)      
+            print('prepare: '+ section_name)      
             lines += prepare_spectrum()
         else:
             lines.append("!"*15 + " "+ section_name + " "+ "!"*(60-len(section_name)) + "\n")

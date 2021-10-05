@@ -19,10 +19,59 @@ w_race = []
 w_copy_sbr = []
 
 import astra_zip
+import ray_tracing
 
-   
+def remove_folder_contents(path):
+    files = next(os.walk(path), (None, None, []))[2]
+    for f in files:
+        os.remove(os.path.join(path, f))
+
+def prepare_astra_to_run():
+    cfg = astra.config['Astra config']
+    astra_home = cfg['astra_path'][0] 
+    exp_file = cfg['exp_file'][0]
+    exp_src = 'exp_equ/' + exp_file    
+    exp_dst = astra_home + '/exp/' + exp_file
+    equ_file = cfg['equ_file'][0]
+    equ_src = 'exp_equ/' + equ_file
+    equ_dst = astra_home + '/equ/' + equ_file
+    dat_file = 'rt_cfg.dat'
+    dat_path = astra_home + '/lhcd/' + dat_file
+    out_folder = astra_home + '/lhcd/out' 
+    dat_folder = astra_home + '/dat' 
+    sbr_list = next(os.walk(os.path.abspath('sbr/')), (None, None, []))[2]
+ 
+    print("Astra home " + astra_home)    
+    shutil.copyfile(exp_src, exp_dst)
+    shutil.copyfile(equ_src, equ_dst)    
+    print(" copy " + exp_src + ' to ' + equ_dst)
+    print(" copy " + equ_src + ' to ' + equ_dst)        
+    shutil.copyfile(dat_file, dat_path)
+    print(" Copy " + dat_file + ' to ' + dat_path)
+    remove_folder_contents(out_folder)
+    print(' Clear folder: ' + out_folder)
+    remove_folder_contents(dat_folder)
+    print(' Clear folder: ' + dat_folder)            
+    if cfg['copy_sbr'][0]:
+        for sbr in sbr_list:
+            sbr_file = 'sbr/'+ sbr
+            srb_dst = astra_home + '/sbr/' + sbr
+            shutil.copyfile(sbr_file, srb_dst)    
+            print(" copy " + sbr_file + ' to ' + srb_dst)
+
+    print()
+    print(" Please run astra by command: ./a4/.exe/astra " + exp_file + ' ' + equ_file)   
+
+
+def prepare_click(b):
+    output.clear_output()
+    with output:
+        ray_tracing.load_parameters()
+        ray_tracing.prepare_rt_dat()
+        prepare_astra_to_run()
 
 def pick_up_results(b):
+    output.clear_output()
     with output:
         print(w_race.value)
         astra_zip.pack_all(w_race.value)
@@ -98,7 +147,7 @@ def widget():
     )   
 
     update_btn.on_click(update_btn_click)
-    #prepare_btn.on_click(prepare_click)
+    prepare_btn.on_click(prepare_click)
     pick_up_btn.on_click(pick_up_results)
     update_widget()
 
