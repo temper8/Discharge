@@ -50,7 +50,8 @@ def widget():
         options=filenames,
         #value='',
         description='Races:',
-        disabled=False
+        disabled=False,
+        layout=widgets.Layout(width='500px', height = '160px')
     )
     widget_races.observe(on_value_change, names='value')
 
