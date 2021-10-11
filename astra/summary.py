@@ -14,21 +14,30 @@ selected_races = []
 widget_races = []
 header = []
 
-def print_info():
+def print_columns(cols):
+    w = 50
+    for k,_ in enumerate(cols[0]):
+        s = ''
+        for j,_ in enumerate(cols):
+            s = s + cols[j][k] + ' '*(w-len(cols[j][k]))
+        print(s)    
+
+
+def print_info(options):
     #print(selected_races)
     w = 50 
     races = [Race(r) for r in selected_races]
     summary = [ r.summary() for r in races]
-    s = ''
-    for f in selected_races:
+    rt_summary = [ r.rt_summary(options) for r in races]
+    
+    for s, rt in zip(summary, rt_summary):
+        s.extend(rt)
+    
+    for s, f in zip(summary, selected_races):
         x = (w-len(f))//2
-        s = s + ' '*x + f + ' '*x
-    print(s)
-    for k,_ in enumerate(summary[0]):
-        s = ''
-        for j,_ in enumerate(summary):
-            s = s + summary[j][k] + ' '*(w-len(summary[j][k]))
-        print(s)    
+        s.insert(0, ' '*x + f + ' '*x)
+    #print(s)
+    print_columns(summary)
 
 
 def widget():

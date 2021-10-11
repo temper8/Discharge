@@ -21,16 +21,24 @@ def float_try(str):
 class Race:
     zip_file = ""
     astra_config = []
+    ray_tracing_parameters = []
+    rtp = {}
     rt_config = []
     traj_list = []
     radial_data_list = []
     def __init__(self, f):
         self.zip_file = f
         self.astra_config =  astra_zip.get_astra_config(f)
+        self.ray_tracing_parameters = astra_zip.get_rt_parameters(f)
+        self.glue_rt_parameters()
         self.traj_list = get_traj_list(f)
         self.radial_data_list = self.get_radial_data_list()
         self.radial_data_list.sort(key=len)
         #print('init')
+
+    def glue_rt_parameters(self):
+        for key in self.ray_tracing_parameters.keys():
+            self.rtp.update(self.ray_tracing_parameters[key])
 
     def get_radial_data_list(self):
         exp_file = self.astra_config['Astra config']['exp_file'][0]
@@ -39,6 +47,15 @@ class Race:
         #print(tmp)
         with ZipFile('races/'+ self.zip_file) as zip:
             return [ z.filename for z in zip.filelist if (z.filename.startswith(tmp))]
+
+    def rt_summary(self, options):
+        lines = []
+        title = 'Ray tracing parameters'
+        x = (48 - len(title))//2
+        lines.append(" {0} {1} {2}".format('='*x, title, '='*x))
+        for o in options:
+            lines.append(f" {o}:  {self.rtp[o][0]} ({self.rtp[o][1]})")
+        return lines
 
     def summary(self):
         lines = []
