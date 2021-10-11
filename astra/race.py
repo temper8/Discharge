@@ -21,24 +21,32 @@ def float_try(str):
 class Race:
     zip_file = ""
     astra_config = []
-    ray_tracing_parameters = []
-    rtp = {}
+    ray_tracing_parameters = {}
     rt_config = []
     traj_list = []
     radial_data_list = []
     def __init__(self, f):
         self.zip_file = f
         self.astra_config =  astra_zip.get_astra_config(f)
-        self.ray_tracing_parameters = astra_zip.get_rt_parameters(f)
-        self.glue_rt_parameters()
+        p = astra_zip.get_rt_parameters(f)
+        self.ray_tracing_parameters =  self.glue_rt_parameters(p)
         self.traj_list = get_traj_list(f)
         self.radial_data_list = self.get_radial_data_list()
         self.radial_data_list.sort(key=len)
         #print('init')
 
-    def glue_rt_parameters(self):
-        for key in self.ray_tracing_parameters.keys():
-            self.rtp.update(self.ray_tracing_parameters[key])
+    def plot_spectrum(self):
+        sp = self.ray_tracing_parameters['LH spectrum']
+        fig, ax = plt.subplots(constrained_layout=True, figsize=(5, 2.5))
+        ax.plot(sp['Ntor'], sp['Amp'])  
+
+    def glue_rt_parameters(self, parameters):
+        g = {}
+        for key in parameters.keys():
+            if key != 'LH spectrum':
+                g.update(parameters[key])
+        g.update({'LH spectrum':parameters['LH spectrum']})
+        return g
 
     def get_radial_data_list(self):
         exp_file = self.astra_config['Astra config']['exp_file'][0]
@@ -54,7 +62,7 @@ class Race:
         x = (48 - len(title))//2
         lines.append(" {0} {1} {2}".format('='*x, title, '='*x))
         for o in options:
-            lines.append(f" {o}:  {self.rtp[o][0]} ({self.rtp[o][1]})")
+            lines.append(f" {o}:  {self.ray_tracing_parameters[o][0]} ({self.ray_tracing_parameters[o][1]})")
         return lines
 
     def summary(self):
