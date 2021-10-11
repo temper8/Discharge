@@ -47,3 +47,9 @@ def get_astra_config(f):
         with zip.open('astra_config.json') as myfile:
                 config = json.load(myfile)
     return config
+
+def get_rt_parameters(f):
+    with ZipFile('races/'+ f) as zip:
+        with zip.open('ray_tracing_cfg.json') as myfile:
+                cfg = json.load(myfile)
+    return cfg
