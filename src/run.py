@@ -21,10 +21,30 @@ w_copy_sbr = []
 import astra_zip
 import ray_tracing
 
-def remove_folder_contents(path):
+def clear_folder_contents(path):
+    print(' Clear folder: ' + path)
     files = next(os.walk(path), (None, None, []))[2]
     for f in files:
         os.remove(os.path.join(path, f))
+
+def copy_file(src, dst):
+    try:
+        shutil.copyfile(src, dst)
+        print(f" copy {src} to {dst}")
+ 
+    except shutil.SameFileError:
+        print("Source and destination represents the same file.")
+ 
+    except IsADirectoryError:
+        print("Destination is a directory.")
+ 
+    except PermissionError:
+        print("Permission denied.")
+ 
+    except:
+        print(f"Error occurred while copying file: {src} to {dst}")
+
+
 
 def prepare_astra_to_run():
     cfg = astra.config['Astra config']
@@ -42,25 +62,20 @@ def prepare_astra_to_run():
     sbr_list = next(os.walk(os.path.abspath('sbr/')), (None, None, []))[2]
  
     print("Astra home " + astra_home)    
-    shutil.copyfile(exp_src, exp_dst)
-    shutil.copyfile(equ_src, equ_dst)    
-    print(" copy " + exp_src + ' to ' + equ_dst)
-    print(" copy " + equ_src + ' to ' + equ_dst)        
-    shutil.copyfile(dat_file, dat_path)
-    print(" Copy " + dat_file + ' to ' + dat_path)
-    remove_folder_contents(out_folder)
-    print(' Clear folder: ' + out_folder)
-    remove_folder_contents(dat_folder)
-    print(' Clear folder: ' + dat_folder)            
+    copy_file(exp_src, exp_dst)
+    copy_file(equ_src, equ_dst)    
+    copy_file('data/'+dat_file, dat_path)
+    clear_folder_contents(out_folder)
+    clear_folder_contents(dat_folder)
+               
     if cfg['copy_sbr'][0]:
         for sbr in sbr_list:
             sbr_file = 'sbr/'+ sbr
             srb_dst = astra_home + '/sbr/' + sbr
-            shutil.copyfile(sbr_file, srb_dst)    
-            print(" copy " + sbr_file + ' to ' + srb_dst)
-
+            copy_file(sbr_file, srb_dst)    
     print()
-    print(" Please run astra by command: ./a4/.exe/astra " + exp_file + ' ' + equ_file)   
+    print(" Please run astra by command: ./a4/.exe/astra " + exp_file + ' ' + equ_file)
+    print()
 
 
 def prepare_click(b):
@@ -71,6 +86,7 @@ def prepare_click(b):
         prepare_astra_to_run()
 
 def pick_up_results(b):
+    global output
     output.clear_output()
     with output:
         print(w_race.value)

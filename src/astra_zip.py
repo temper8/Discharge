@@ -24,17 +24,20 @@ def pack_all(file_name):
     dst = '/dat'
     pack_folder_to_ZipFile(src,dst)
     print( ' pack folder: ' + dst)
+    pack_folder_to_ZipFile(os.path.abspath('sbr'),'/sbr')
+    print('pack sbr')
 
 
 
 def pack_config():
     with ZipFile('races/'+ my_zip_file, 'w', compression=zipfile.ZIP_BZIP2, compresslevel = 9) as zip:
-        zip.write("astra_config.json")      
-        zip.write("ray_tracing_cfg.json")      
+        zip.write("data/astra_config.json", "astra_config.json",)      
+        zip.write("data/ray_tracing_cfg.json", "ray_tracing_cfg.json")      
 
 def pack_folder_to_ZipFile(src, dst):
     
     filenames = next(os.walk(src), (None, None, []))[2]
+    #print(filenames)
     with ZipFile('races/'+ my_zip_file, 'a', compression=zipfile.ZIP_BZIP2, compresslevel = 9) as zip:
         # writing each file one by one
         for file in filenames:

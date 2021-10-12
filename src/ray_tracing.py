@@ -137,7 +137,7 @@ def prepare_dat_file():
 
 def prepare_rt_dat():
     lines = prepare_dat_file()
-    file_path = os.path.abspath("rt_cfg.dat")
+    file_path = os.path.abspath("data/rt_cfg.dat")
     with open(file_path, 'w') as f:
         for line in lines:
             f.write(line)
