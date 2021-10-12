@@ -85,9 +85,6 @@ class Race:
         for l in lines:
             print(l)
 
-    
-
-
     def read_radial_data(self,f):
         with ZipFile('races/'+ self.zip_file) as zip:
             with zip.open(f) as file:
