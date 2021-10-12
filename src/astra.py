@@ -27,7 +27,7 @@ def default_config():
 output = []
 config = []
 all_items = []
-config_file ='astra_config.json'
+config_file ='data/astra_config.json'
 import json
 
 def init_config():
