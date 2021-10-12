@@ -93,7 +93,7 @@ import astra
 all_items = []
 parameters = []
 output = []
-parameters_file = "ray_tracing_cfg.json"
+parameters_file = "data/ray_tracing_cfg.json"
 
 def divide_spectrum():
     sp = [x for x in zip(parameters['LH spectrum']['Ntor'], parameters['LH spectrum']['Amp'])]
