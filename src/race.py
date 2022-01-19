@@ -1,3 +1,5 @@
+import operator
+from pickletools import read_unicodestring1 
 import astra_zip
 
 from zipfile import ZipFile
@@ -54,7 +56,11 @@ class Race:
         tmp = 'dat/{0}.{1}.'.format(exp_file,equ_file)
         #print(tmp)
         with ZipFile('races/'+ self.zip_file) as zip:
-            return [ z.filename for z in zip.filelist if (z.filename.startswith(tmp))]
+            list = [ z.filename for z in zip.filelist if (z.filename.startswith(tmp))]
+        num = len(list)
+        return [tmp+str(i) for i in range(0,num)]
+
+        
 
     def rt_summary(self, options):
         lines = []
