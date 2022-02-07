@@ -9,6 +9,7 @@ python = "^3.10"
 matplotlib = "^3.5.1"
 ipykernel = "^6.8.0"
 ipywidgets = "^7.6.5"
+ipympl = "^0.8.7"
 
 [tool.poetry.dev-dependencies]
 

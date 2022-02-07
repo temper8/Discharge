@@ -228,6 +228,23 @@ traitlets = ">=5.1.0,<6.0"
 test = ["pytest (!=5.3.4)", "pytest-cov", "flaky", "ipyparallel"]
 
 [[package]]
+name = "ipympl"
+version = "0.8.7"
+description = "Matplotlib Jupyter Extension"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+ipython = "<9"
+ipython-genutils = "*"
+ipywidgets = ">=7.6.0,<8"
+matplotlib = ">=2.0.0,<4"
+numpy = "*"
+pillow = "*"
+traitlets = "<6"
+
+[[package]]
 name = "ipython"
 version = "8.0.1"
 description = "IPython: Productive Interactive Computing"
@@ -899,7 +916,7 @@ notebook = ">=4.4.1"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "ef1241e1e7c61a3cb1563a9aa365148beedd0613e5ed796f679453d769f324b5"
+content-hash = "d63234a5c54cb6d51d50b067812f16d6532cafd6467e76bde8b8516dbdba9d24"
 
 [metadata.files]
 appnope = [
@@ -1084,6 +1101,10 @@ fonttools = [
 ipykernel = [
     {file = "ipykernel-6.8.0-py3-none-any.whl", hash = "sha256:6c977ead67ec22151993a5f848b97e57a5e771f979b510941e157b2e7fe54184"},
     {file = "ipykernel-6.8.0.tar.gz", hash = "sha256:67d316d527eca24e3ded45a2b38689615bcda1aa520a11af0accdcea7152c18a"},
+]
+ipympl = [
+    {file = "ipympl-0.8.7-py2.py3-none-any.whl", hash = "sha256:11c3d01f0555f855c51a960964e3ab4dff38e6ccd1a4695205fe250341a9eb99"},
+    {file = "ipympl-0.8.7.tar.gz", hash = "sha256:c69f55668758e6e18ab5754ed3e6f74faea81939594467717345f1ca62858b3d"},
 ]
 ipython = [
     {file = "ipython-8.0.1-py3-none-any.whl", hash = "sha256:c503a0dd6ccac9c8c260b211f2dd4479c042b49636b097cc9a0d55fe62dff64c"},
