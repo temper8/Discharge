@@ -147,6 +147,29 @@ def init_parameters():
     parameters = default_parameters()
     load_parameters()
 
+def parse_parameters(lines):
+    param = default_parameters()
+    #'Physical parameters'
+    print(lines[0])
+    row = 1
+    for key, p in param['Physical parameters'].items():
+        v = lines[row].split()
+        row = row + 1
+        #print(v)
+        p[0] = float(v[0])
+        print(key, p)
+        #p[0] = 
+    return param
+
+def import_parameters(file_name):
+    global parameters
+    file_path = os.path.abspath(f"data/{file_name}")
+    if os.path.exists(file_path):
+        with open(file_path) as f:
+            lines = f.readlines()
+    parameters = parse_parameters(lines)
+
+
 def load_parameters():
     global parameters
     fp = os.path.abspath(parameters_file)
