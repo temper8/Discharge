@@ -64,8 +64,8 @@ def default_option():
 
 def default_grill_parameters():
     p = {
-        'Zplus': [11,'int', 'upper grill corner in centimeters'],
-        'Zminus': [-11,'int', 'lower grill corner in centimeters'],
+        'Zplus': [11,'float', 'upper grill corner in centimeters'],
+        'Zminus': [-11,'float', 'lower grill corner in centimeters'],
         'ntet': [21,'int', 'theta grid number'],
         'nnz': [51,'int','iN_phi grid number'],
         'total power': [1,'%','total power in positive spectrum']
@@ -150,21 +150,70 @@ def init_parameters():
 def parse_parameters(lines):
     param = default_parameters()
     #'Physical parameters'
-    print(lines[0])
+    
     row = 1
     for key, p in param['Physical parameters'].items():
         v = lines[row].split()
         row = row + 1
-        #print(v)
         p[0] = float(v[0])
-        print(key, p)
-        #p[0] = 
+
+    #'Parameters for alphas calculations'
+    #print(lines[10])
+    row = 11    
+    for key, p in param['Parameters for alphas calculations'].items():
+        v = lines[row].split()
+        row = row + 1
+        #print(v)
+        if p[1] == 'int':
+            p[0] = int(v[0])    
+        else:
+            p[0] = float(v[0])
+        #print(key, p)
+    #'Numerical parameters'
+    #print(lines[16])
+    row = 17    
+    for key, p in param['Numerical parameters'].items():
+        v = lines[row].split()
+        row = row + 1
+        if p[1] == 'int':
+            p[0] = int(v[0])    
+        else:
+            p[0] = float(v[0])
+        #print(key, p)
+
+    #'options'
+    #print(lines[38])
+    row = 39    
+    for key, p in param['Options'].items():
+        v = lines[row].split()
+        row = row + 1
+        if p[1] == 'int':
+            p[0] = int(v[0])    
+        else:
+            p[0] = float(v[0])
+        #print(key, p)
+
+    #'grill parameters'
+    #print(lines[47])
+    row = 48    
+    for key, p in param['grill parameters'].items():
+        if key != 'total power':
+            v = lines[row].split()
+            row = row + 1
+            if p[1] == 'int':
+                p[0] = int(v[0])    
+            else:
+                p[0] = float(v[0])
+            #print(key, p)
+
     return param
 
 def import_parameters(file_name):
     global parameters
     file_path = os.path.abspath(f"data/{file_name}")
+    
     if os.path.exists(file_path):
+        print(f"Import parameters from:{file_path}")
         with open(file_path) as f:
             lines = f.readlines()
     parameters = parse_parameters(lines)
