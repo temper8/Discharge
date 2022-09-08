@@ -12,6 +12,7 @@ ipywidgets = "^7.6.5"
 ipympl = "^0.8.7"
 
 [tool.poetry.dev-dependencies]
+jupyter = "^1.0.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
